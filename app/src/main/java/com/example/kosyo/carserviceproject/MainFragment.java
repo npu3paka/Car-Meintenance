@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +19,7 @@ import java.util.Arrays;
  */
 public class MainFragment extends Fragment {
     private LinearLayout mCurrentAutosLayout;
+    private LinearLayout mAddNewAutoLayout;
     private ArrayList<String> carPartsOverdue;
 
     // Singleton implementation
@@ -62,17 +62,24 @@ public class MainFragment extends Fragment {
 
     private void initializeLayoutElements(View view) {
         mCurrentAutosLayout = (LinearLayout) view.findViewById(R.id.current_autos_layout);
+        mAddNewAutoLayout = (LinearLayout) view.findViewById(R.id.add_automobile_layout);
     }
 
     private void setOnClickListeners() {
+        final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.hide(getFragmentManager().findFragmentByTag("MainFragment"));
         mCurrentAutosLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toast = Toast.makeText(getActivity(), "Clicked current autos linear layout", Toast.LENGTH_LONG);
-                toast.show();
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.hide(getFragmentManager().findFragmentByTag("MainFragment"));
-                fragmentTransaction.add(R.id.main_framelayout, new CurrentAutosFragment(), "CurrentAutosFragment")
+
+                fragmentTransaction.add(R.id.main_framelayout, CurrentAutosFragment.getInstance(), "CurrentAutosFragment")
+                        .commit();
+            }
+        });
+        mAddNewAutoLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentTransaction.add(R.id.main_framelayout, AddNewAutoFragment.getInstance(), "AddNewAutoFragment")
                         .commit();
             }
         });
