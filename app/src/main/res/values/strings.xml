@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Car Service</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="login_button_title">login</string>
+    <string name="register_button_title">register</string>
+    <string name="user_tv_hint">e-mail</string>
+    <string name="password_et_hint">password</string>
+    <string name="add_automobile">Add automobile</string>
+    <string name="current_automobiles">Current automobile</string>
+    <string name="overdue">Overdue:</string>
+
+</resources>

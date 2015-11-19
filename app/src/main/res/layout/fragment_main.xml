@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/add_automobile_layout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/plus_iv"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@mipmap/plus_96px" />
+
+        <TextView
+            android:id="@+id/add_automobile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:text="@string/add_automobile"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/current_autos_layout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@id/add_automobile_layout"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/index_iv"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@mipmap/index_multiline_96px" />
+
+        <TextView
+            android:id="@+id/current_automobiles"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:text="@string/current_automobiles"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/overdue_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/current_autos_layout"
+        android:text="@string/overdue"
+        android:textSize="15sp" />
+
+    <ListView
+        android:id="@+id/overdue_items_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/overdue_tv">
+
+    </ListView>
+
+</RelativeLayout>
