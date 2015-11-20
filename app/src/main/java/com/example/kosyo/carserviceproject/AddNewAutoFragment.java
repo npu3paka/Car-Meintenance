@@ -1,6 +1,6 @@
 package com.example.kosyo.carserviceproject;
 
-import android.app.DialogFragment;
+import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
+import java.util.Calendar;
 
 /**
  * Created by kosyo on 19.11.15.
@@ -25,6 +27,10 @@ public class AddNewAutoFragment extends Fragment {
     private String registrationNum;
     private String currentService;
     private String kmToNextService;
+    private String mDay;
+    private String mMonth;
+    private String mYear;
+    private String mBirthDataText;
 
 
     // Singleton implementation
@@ -61,25 +67,25 @@ public class AddNewAutoFragment extends Fragment {
     }
 
     private void setOnClickListeners() {
-        final DialogFragment dialogFragment = new DatePickerFragment();
+
         btnNextService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogFragment.show(getFragmentManager(), "datePicker");
+                showSimpleDatePicker(v);
             }
         });
 
         btnInsurance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogFragment.show(getFragmentManager(), "datePicker");
+                showSimpleDatePicker(v);
             }
         });
 
         btnMotorCasco.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogFragment.show(getFragmentManager(), "datePicker");
+                showSimpleDatePicker(v);
             }
         });
     }
@@ -94,5 +100,39 @@ public class AddNewAutoFragment extends Fragment {
         btnMotorCasco = (Button) view.findViewById(R.id.btnMotorCasco);
     }
 
+
+    /**
+     * method for taking the correct value of date picker
+     */
+    public static String getZeroPaddedNum(int num) {
+        String str;
+        if (num < 10 && num >= 0) {
+            str = "0" + num;
+        } else {
+            str = String.valueOf(num);
+        }
+        return str;
+    }
+
+    public void showSimpleDatePicker(View v) {
+        DatePickerDialog.OnDateSetListener mDatePickerCallback = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                mDay = getZeroPaddedNum(dayOfMonth);
+                mMonth = getZeroPaddedNum(monthOfYear + 1);
+                mYear = Integer.toString(year);
+                //  mBirthDataText.setText(mYear + "-" + mMonth + "-" + mDay);
+            }
+        };
+
+        DatePickerDialog mDatePickerDialog = new DatePickerDialog(getActivity(),
+                mDatePickerCallback,
+                Calendar.getInstance().get(Calendar.YEAR),
+                Calendar.getInstance().get(Calendar.MONTH),
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        // mDatePickerDialog.getDatePicker().setMaxDate(new Date().getTime() - MILLISECONDS_IN_YEAR * MIN_USER_YEARS);
+        mDatePickerDialog.show();
+
+    }
 
 }
