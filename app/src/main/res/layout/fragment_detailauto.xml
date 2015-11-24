@@ -4,17 +4,24 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Details" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/tvEmpty"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="My Automobiles"
-        android:textSize="15sp" />
+        android:background="#FF0000"
+        android:text="No data" />
 
     <ListView
-        android:id="@+id/lvCurrentAutos"
+        android:id="@+id/lvDetailAuto"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
 
     </ListView>
 

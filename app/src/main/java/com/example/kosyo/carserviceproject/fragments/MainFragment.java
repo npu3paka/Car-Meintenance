@@ -1,7 +1,8 @@
-package com.example.kosyo.carserviceproject;
+package com.example.kosyo.carserviceproject.fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,16 +12,20 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.example.kosyo.carserviceproject.R;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by kosyo on 19.11.15.
  */
 public class MainFragment extends Fragment {
+    public static final String TAG = MainFragment.class.getSimpleName();
+    private newFragmentListener mListener;
     private LinearLayout mCurrentAutosLayout;
     private LinearLayout mAddNewAutoLayout;
-    private ArrayList<String> carPartsOverdue;
+    // All current ownedCarsDetails the user have. Use as database
+    private ArrayList<String> regNumOwnedCarsList;
 
     // Singleton implementation
     private static MainFragment instance;
@@ -32,23 +37,39 @@ public class MainFragment extends Fragment {
         return instance;
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (newFragmentListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (newFragmentListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-
-        carPartsOverdue = new ArrayList<String>(Arrays.asList("A 0001 AA", "A 0002 AA", "A 0003 AA",
-                "A 0004 AA", "A 0005 AA", "A 0006 AA", "A 0007 AA", "A 0008 AA", "A 0009 AA", "A 0010 AA"));
-
         ListView overdueItemsListView = (ListView) view.findViewById(R.id.overdue_items_listview);
         ArrayAdapter<String> overduePartsArrayAdapter = new ArrayAdapter<String>(
                 getActivity(),
                 android.R.layout.simple_list_item_1,
-                carPartsOverdue
+                this.regNumOwnedCarsList
         );
-
         overdueItemsListView.setAdapter(overduePartsArrayAdapter);
-
         return view;
     }
 
@@ -65,23 +86,29 @@ public class MainFragment extends Fragment {
         mAddNewAutoLayout = (LinearLayout) view.findViewById(R.id.add_automobile_layout);
     }
 
+    // TODO: set listenrs for the listview
     private void setOnClickListeners() {
-        final FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.hide(getFragmentManager().findFragmentByTag("MainFragment"));
-        mCurrentAutosLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                fragmentTransaction.add(R.id.main_framelayout, CurrentAutosFragment.getInstance(), "CurrentAutosFragment")
-                        .commit();
-            }
-        });
         mAddNewAutoLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fragmentTransaction.add(R.id.main_framelayout, AddNewAutoFragment.getInstance(), "AddNewAutoFragment")
-                        .commit();
+                mListener.onAddNewAutoFragmentClicked();
             }
         });
+        mCurrentAutosLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onCurrentAutoFragmentClicked();
+            }
+        });
+    }
+
+    public void setRegNumOwnedCarsList(ArrayList<String> regNumOwnedCarsList) {
+        this.regNumOwnedCarsList = regNumOwnedCarsList;
+    }
+
+    public interface newFragmentListener {
+        void onAddNewAutoFragmentClicked();
+
+        void onCurrentAutoFragmentClicked();
     }
 }

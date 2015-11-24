@@ -7,49 +7,85 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="Add new auto to existing"
         android:textSize="15sp" />
 
     <EditText
         android:id="@+id/etRegisrationNum"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:hint="Car registration number" />
 
     <EditText
         android:id="@+id/etCurrentKm"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:hint="Total mileage"
         android:inputType="numberSigned" />
 
     <EditText
         android:id="@+id/etKmToNextService"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
         android:hint="Km to next service"
         android:inputType="numberSigned" />
 
-    <Button
-        android:id="@+id/btnNextService"
-        android:layout_width="240dp"
+    <EditText
+        android:id="@+id/etNextService"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="date"
-        android:text="next service expiration date" />
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:hint="next service expiration date" />
+
+    <EditText
+        android:id="@+id/etInsurance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:hint="insurance expiration date" />
+
+    <EditText
+        android:id="@+id/etMotorCasco"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:hint="motor casco expiration date" />
+
+    <EditText
+        android:id="@+id/etCarService"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:hint="car service expiration date" />
+
+    <EditText
+        android:id="@+id/etRoadTax"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:hint="road tax expiration date" />
 
     <Button
-        android:id="@+id/btnInsurance"
-        android:layout_width="240dp"
+        android:id="@+id/btnCreateCar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="date"
-        android:text="insurance expiration date" />
-
-    <Button
-        android:id="@+id/btnMotorCasco"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:text="motor casco expiration date" />
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:text="create"
+        android:background="#00c853"
+        android:textColor="#ffffff"/>
 
 
 </LinearLayout>

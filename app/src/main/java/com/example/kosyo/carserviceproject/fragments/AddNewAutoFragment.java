@@ -1,4 +1,4 @@
-package com.example.kosyo.carserviceproject;
+package com.example.kosyo.carserviceproject.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.Fragment;
@@ -7,8 +7,10 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
+
+import com.example.kosyo.carserviceproject.R;
+import com.example.kosyo.carserviceproject.models.Vehicle;
 
 import java.util.Calendar;
 
@@ -16,22 +18,23 @@ import java.util.Calendar;
  * Created by kosyo on 19.11.15.
  */
 public class AddNewAutoFragment extends Fragment {
+    public static final String TAG = AddNewAutoFragment.class.getSimpleName();
     private static AddNewAutoFragment instance;
-    private Model mAuto;
+    Vehicle mVehicle;
     private EditText etRegistrationNum;
     private EditText etCurrentKm;
     private EditText etKmToNextService;
-    private Button btnNextService;
-    private Button btnInsurance;
-    private Button btnMotorCasco;
-    private String registrationNum;
-    private String currentService;
-    private String kmToNextService;
+    private EditText etNextService;
+    private EditText etInsurance;
+    private EditText etMotorCasco;
+    private EditText etCarService;
+    private EditText etRoadTax;
     private String mDay;
     private String mMonth;
     private String mYear;
-    private String mBirthDataText;
 
+    // TODO: change type of datepicker to textview
+    // TODO: add btn to save ne car data and add it to fake database
 
     // Singleton implementation
     public static AddNewAutoFragment getInstance() {
@@ -57,49 +60,69 @@ public class AddNewAutoFragment extends Fragment {
         setOnClickListeners();
 
         if (etRegistrationNum != null && etCurrentKm != null && etKmToNextService != null) {
-            mAuto.setmRegistrationNum(etRegistrationNum.getText().toString());
-            if (!(etCurrentKm.getText().toString().equals("") &&
-                    etKmToNextService.getText().toString().equals(""))) {
-                mAuto.setmCurrentKm(Integer.parseInt(etCurrentKm.getText().toString()));
-                mAuto.setmKmToNextService(Integer.parseInt(etKmToNextService.getText().toString()));
+            if (!etRegistrationNum.toString().equals("") &&
+                    !etCurrentKm.getText().toString().equals("") &&
+                    !etKmToNextService.getText().toString().equals("")) {
+                mVehicle.setmRegistrationNum(etRegistrationNum.getText().toString());
+                mVehicle.setmCurrentKm(Integer.parseInt(etCurrentKm.getText().toString()));
+                mVehicle.setmKmToNextService(Integer.parseInt(etKmToNextService.getText().toString()));
             }
         }
     }
 
     private void setOnClickListeners() {
 
-        btnNextService.setOnClickListener(new View.OnClickListener() {
+        etNextService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSimpleDatePicker(v);
+                showSimpleDatePicker(v, etNextService);
+                mVehicle.setmNextServiceDate(etKmToNextService.getText().toString());
             }
         });
 
-        btnInsurance.setOnClickListener(new View.OnClickListener() {
+        etInsurance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSimpleDatePicker(v);
+                showSimpleDatePicker(v, etInsurance);
+                mVehicle.setmNextInsuranceDate(etInsurance.getText().toString());
             }
         });
 
-        btnMotorCasco.setOnClickListener(new View.OnClickListener() {
+        etMotorCasco.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSimpleDatePicker(v);
+                showSimpleDatePicker(v, etMotorCasco);
+                mVehicle.setmNextMotorCascoDate(etMotorCasco.getText().toString());
+            }
+        });
+        etCarService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSimpleDatePicker(v, etCarService);
+                mVehicle.setmNextCarServiceDate(etCarService.getText().toString());
+            }
+        });
+
+        etRoadTax.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSimpleDatePicker(v, etRoadTax);
+                mVehicle.setmNextRoadTaxDate(etRoadTax.getText().toString());
             }
         });
     }
 
     private void initializeLayoutElements(View view) {
-        mAuto = new Model();
+        mVehicle = new Vehicle();
         etRegistrationNum = (EditText) view.findViewById(R.id.etRegisrationNum);
         etCurrentKm = (EditText) view.findViewById(R.id.etCurrentKm);
         etKmToNextService = (EditText) view.findViewById(R.id.etKmToNextService);
-        btnNextService = (Button) view.findViewById(R.id.btnNextService);
-        btnInsurance = (Button) view.findViewById(R.id.btnInsurance);
-        btnMotorCasco = (Button) view.findViewById(R.id.btnMotorCasco);
+        etNextService = (EditText) view.findViewById(R.id.etNextService);
+        etInsurance = (EditText) view.findViewById(R.id.etInsurance);
+        etMotorCasco = (EditText) view.findViewById(R.id.etMotorCasco);
+        etCarService = (EditText) view.findViewById(R.id.etCarService);
+        etRoadTax = (EditText) view.findViewById(R.id.etRoadTax);
     }
-
 
     /**
      * method for taking the correct value of date picker
@@ -114,14 +137,14 @@ public class AddNewAutoFragment extends Fragment {
         return str;
     }
 
-    public void showSimpleDatePicker(View v) {
+    public void showSimpleDatePicker(View v, final EditText editText) {
         DatePickerDialog.OnDateSetListener mDatePickerCallback = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 mDay = getZeroPaddedNum(dayOfMonth);
                 mMonth = getZeroPaddedNum(monthOfYear + 1);
                 mYear = Integer.toString(year);
-                //  mBirthDataText.setText(mYear + "-" + mMonth + "-" + mDay);
+                editText.setText(mDay + "-" + mMonth + "-" + mYear);
             }
         };
 
@@ -130,9 +153,6 @@ public class AddNewAutoFragment extends Fragment {
                 Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-        // mDatePickerDialog.getDatePicker().setMaxDate(new Date().getTime() - MILLISECONDS_IN_YEAR * MIN_USER_YEARS);
         mDatePickerDialog.show();
-
     }
-
 }
