@@ -16,7 +16,9 @@ import java.util.Arrays;
 /**
  * Created by kosyo on 17.11.15.
  */
-public class MainActivity extends BaseActivity implements MainFragment.OnNewFragmentListener, CurrentAutosFragment.OnCarSelectedListener {
+public class MainActivity extends BaseActivity implements MainFragment.OnNewFragmentListener,
+        CurrentAutosFragment.OnCarSelectedListener, AddNewAutoFragment.OnCreateVehicleClicked {
+
     // Dummy data - all detail car information
     private ArrayList<Vehicle> ownedCarsDetails;
     // Dummy data - list of all reg numbers of owned ownedCarsDetails
@@ -54,8 +56,6 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
         CurrentAutosFragment currentAutosFragment = CurrentAutosFragment.getInstance();
         currentAutosFragment.setCars(regNumOwnedVehicleList);
 
-        // TODO: pass data to addNewAuto fragment
-
         // Load the default fragment
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.main_framelayout, mainFragment, MainFragment.TAG)
@@ -64,7 +64,7 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
 
     @Override
     public void onAddNewAutoFragmentClicked() {
-        AddNewAutoFragment addNewAutoFragment = AddNewAutoFragment.getInstance();
+        AddNewAutoFragment addNewAutoFragment = new AddNewAutoFragment();
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction
                 .addToBackStack(null)
@@ -122,5 +122,24 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
                 .addToBackStack(null)
                 .replace(R.id.main_framelayout, detailAutoFragment, DetailAutoFragment.TAG)
                 .commit();
+    }
+
+    @Override
+    public void onAddVehicleClicked(Vehicle vehicle) {
+        // Add new user vehicle to database
+        ownedCarsDetails.add(vehicle);
+        regNumOwnedVehicleList.add(vehicle.getmRegistrationNum());
+
+        // Close AddNewAutoFragment and open Main Fragment again
+        MainFragment mainFragment = MainFragment.getInstance();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.main_framelayout, mainFragment, MainFragment.TAG).commit();
+    }
+
+    @Override
+    public void onCancelClicked() {
+        MainFragment mainFragment = MainFragment.getInstance();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.main_framelayout, mainFragment, MainFragment.TAG).commit();
     }
 }

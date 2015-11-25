@@ -86,6 +86,7 @@ public class CurrentAutosFragment extends Fragment {
             }
         });
     }
+
     // old wrong way
 //    @Override
 //    public void onListItemClick(ListView l, View v, int position, long id) {

@@ -1,13 +1,17 @@
 package com.example.kosyo.carserviceproject.fragments;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.kosyo.carserviceproject.R;
 import com.example.kosyo.carserviceproject.models.Vehicle;
@@ -19,29 +23,52 @@ import java.util.Calendar;
  */
 public class AddNewAutoFragment extends Fragment {
     public static final String TAG = AddNewAutoFragment.class.getSimpleName();
-    private static AddNewAutoFragment instance;
-    Vehicle mVehicle;
+    private OnCreateVehicleClicked mListener;
+    private Vehicle mVehicle;
+
+    private Button btnCreateVehicle;
+    private Button btnCancel;
     private EditText etRegistrationNum;
     private EditText etCurrentKm;
-    private EditText etKmToNextService;
-    private EditText etNextService;
-    private EditText etInsurance;
-    private EditText etMotorCasco;
-    private EditText etCarService;
-    private EditText etRoadTax;
+    private TextView tvKmToNextService;
+    private TextView tvNextService;
+    private TextView tvInsurance;
+    private TextView tvMotorCasco;
+    private TextView tvCarService;
+    private TextView tvRoadTax;
     private String mDay;
     private String mMonth;
     private String mYear;
 
-    // TODO: change type of datepicker to textview
-    // TODO: add btn to save ne car data and add it to fake database
+    private String mRegistrationNum;
+    private int mCurrentKm;
+    private int mKmToNextService;
+    private String mNextService;
+    private String mInsurance;
+    private String mMotorCasco;
+    private String mCarService;
+    private String mRoadTax;
 
-    // Singleton implementation
-    public static AddNewAutoFragment getInstance() {
-        if (instance == null) {
-            instance = new AddNewAutoFragment();
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (OnCreateVehicleClicked) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
         }
-        return instance;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (OnCreateVehicleClicked) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
     }
 
     @Nullable
@@ -59,70 +86,99 @@ public class AddNewAutoFragment extends Fragment {
 
         setOnClickListeners();
 
-        if (etRegistrationNum != null && etCurrentKm != null && etKmToNextService != null) {
-            if (!etRegistrationNum.toString().equals("") &&
-                    !etCurrentKm.getText().toString().equals("") &&
-                    !etKmToNextService.getText().toString().equals("")) {
-                mVehicle.setmRegistrationNum(etRegistrationNum.getText().toString());
-                mVehicle.setmCurrentKm(Integer.parseInt(etCurrentKm.getText().toString()));
-                mVehicle.setmKmToNextService(Integer.parseInt(etKmToNextService.getText().toString()));
-            }
-        }
+    }
+
+    //    private boolean validateInput() {
+//        if (etRegistrationNum != null && etCurrentKm != null && tvKmToNextService != null) {
+//            if (!etRegistrationNum.toString().equals("") &&
+//                    !etCurrentKm.getText().toString().equals("") &&
+//                    !tvKmToNextService.getText().toString().equals("")) {
+//            }
+//            return true;
+//        }
+//        return false;
+//    }
+
+    private void initializeLayoutElements(View view) {
+        btnCreateVehicle = (Button) view.findViewById(R.id.btnCreateVehicle);
+        btnCancel = (Button) view.findViewById(R.id.btnCancel);
+        etRegistrationNum = (EditText) view.findViewById(R.id.etRegisrationNum);
+        etCurrentKm = (EditText) view.findViewById(R.id.etCurrentKm);
+        tvKmToNextService = (EditText) view.findViewById(R.id.etKmToNextService);
+        tvNextService = (TextView) view.findViewById(R.id.etNextService);
+        tvInsurance = (TextView) view.findViewById(R.id.etInsurance);
+        tvMotorCasco = (TextView) view.findViewById(R.id.etMotorCasco);
+        tvCarService = (TextView) view.findViewById(R.id.etCarService);
+        tvRoadTax = (TextView) view.findViewById(R.id.etRoadTax);
     }
 
     private void setOnClickListeners() {
 
-        etNextService.setOnClickListener(new View.OnClickListener() {
+        tvNextService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSimpleDatePicker(v, etNextService);
-                mVehicle.setmNextServiceDate(etKmToNextService.getText().toString());
+                showSimpleDatePicker(v, tvNextService);
             }
         });
 
-        etInsurance.setOnClickListener(new View.OnClickListener() {
+        tvInsurance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSimpleDatePicker(v, etInsurance);
-                mVehicle.setmNextInsuranceDate(etInsurance.getText().toString());
+                showSimpleDatePicker(v, tvInsurance);
             }
         });
 
-        etMotorCasco.setOnClickListener(new View.OnClickListener() {
+        tvMotorCasco.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSimpleDatePicker(v, etMotorCasco);
-                mVehicle.setmNextMotorCascoDate(etMotorCasco.getText().toString());
+                showSimpleDatePicker(v, tvMotorCasco);
             }
         });
-        etCarService.setOnClickListener(new View.OnClickListener() {
+        tvCarService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSimpleDatePicker(v, etCarService);
-                mVehicle.setmNextCarServiceDate(etCarService.getText().toString());
+                showSimpleDatePicker(v, tvCarService);
             }
         });
 
-        etRoadTax.setOnClickListener(new View.OnClickListener() {
+        tvRoadTax.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSimpleDatePicker(v, etRoadTax);
-                mVehicle.setmNextRoadTaxDate(etRoadTax.getText().toString());
+                showSimpleDatePicker(v, tvRoadTax);
+            }
+        });
+
+        btnCreateVehicle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //boolean isInputValid = validateInput();
+                // TODO: do smth with the validation
+
+                //Create new vehicle object and pass it to the activity
+                mRegistrationNum = etRegistrationNum.getText().toString();
+                mCurrentKm = Integer.parseInt(etCurrentKm.getText().toString());
+                mKmToNextService = Integer.parseInt(tvKmToNextService.getText().toString());
+                mInsurance = tvInsurance.getText().toString();
+                mNextService = tvNextService.getText().toString();
+                mMotorCasco = tvMotorCasco.getText().toString();
+                mCarService = tvCarService.getText().toString();
+                mRoadTax = tvRoadTax.getText().toString();
+
+                mVehicle = new Vehicle(mRegistrationNum, mCurrentKm, mKmToNextService,
+                        mInsurance, mNextService, mMotorCasco, mCarService, mRoadTax);
+
+                mListener.onAddVehicleClicked(mVehicle);
+            }
+        });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onCancelClicked();
             }
         });
     }
 
-    private void initializeLayoutElements(View view) {
-        mVehicle = new Vehicle();
-        etRegistrationNum = (EditText) view.findViewById(R.id.etRegisrationNum);
-        etCurrentKm = (EditText) view.findViewById(R.id.etCurrentKm);
-        etKmToNextService = (EditText) view.findViewById(R.id.etKmToNextService);
-        etNextService = (EditText) view.findViewById(R.id.etNextService);
-        etInsurance = (EditText) view.findViewById(R.id.etInsurance);
-        etMotorCasco = (EditText) view.findViewById(R.id.etMotorCasco);
-        etCarService = (EditText) view.findViewById(R.id.etCarService);
-        etRoadTax = (EditText) view.findViewById(R.id.etRoadTax);
-    }
 
     /**
      * method for taking the correct value of date picker
@@ -137,14 +193,14 @@ public class AddNewAutoFragment extends Fragment {
         return str;
     }
 
-    public void showSimpleDatePicker(View v, final EditText editText) {
+    public void showSimpleDatePicker(View v, final TextView textView) {
         DatePickerDialog.OnDateSetListener mDatePickerCallback = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 mDay = getZeroPaddedNum(dayOfMonth);
                 mMonth = getZeroPaddedNum(monthOfYear + 1);
                 mYear = Integer.toString(year);
-                editText.setText(mDay + "-" + mMonth + "-" + mYear);
+                textView.setText(mDay + "-" + mMonth + "-" + mYear);
             }
         };
 
@@ -155,4 +211,11 @@ public class AddNewAutoFragment extends Fragment {
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         mDatePickerDialog.show();
     }
+
+    public interface OnCreateVehicleClicked {
+        void onAddVehicleClicked(Vehicle vehicle);
+
+        void onCancelClicked();
+    }
+
 }

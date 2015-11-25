@@ -16,10 +16,6 @@ public class Vehicle {
     private String mNextCarServiceDate; // yearly technical service
     private String mNextRoadTaxDate;
 
-    public Vehicle(){
-
-    }
-
     public Vehicle(String mRegistrationNum, int mCurrentKm, int mKmToNextService, String mNextServiceDate,
                    String mNextInsuranceDate, String mNextMotorCascoDate,
                    String mNextCarServiceDate, String mNextRoadTaxDate) {
@@ -97,36 +93,4 @@ public class Vehicle {
     public void setmRegistrationNum(String mRegistrationNum) {
         this.mRegistrationNum = mRegistrationNum;
     }
-//
-//
-//    private class DateInner {
-//        int year;
-//        int month;
-//        int day;
-//
-//        public int getYear() {
-//            return year;
-//        }
-//
-//        public void setYear(int year) {
-//            this.year = year;
-//        }
-//
-//        public int getDay() {
-//            return day;
-//        }
-//
-//        public void setDay(int day) {
-//            this.day = day;
-//        }
-//
-//        public int getMonth() {
-//            return month;
-//        }
-//
-//        public void setMonth(int month) {
-//            this.month = month;
-//        }
-//    } // end inner class
-
 }
