@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -21,9 +22,10 @@ import java.util.ArrayList;
  */
 public class MainFragment extends Fragment {
     public static final String TAG = MainFragment.class.getSimpleName();
-    private newFragmentListener mListener;
+    private OnNewFragmentListener mListener;
     private LinearLayout mCurrentAutosLayout;
     private LinearLayout mAddNewAutoLayout;
+    private ListView mOverdueListView;
     // All current ownedCarsDetails the user have. Use as database
     private ArrayList<String> regNumOwnedCarsList;
 
@@ -41,7 +43,7 @@ public class MainFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (newFragmentListener) activity;
+            mListener = (OnNewFragmentListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnHeadlineSelectedListener");
@@ -52,7 +54,7 @@ public class MainFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mListener = (newFragmentListener) context;
+            mListener = (OnNewFragmentListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
                     + " must implement OnHeadlineSelectedListener");
@@ -84,9 +86,9 @@ public class MainFragment extends Fragment {
     private void initializeLayoutElements(View view) {
         mCurrentAutosLayout = (LinearLayout) view.findViewById(R.id.current_autos_layout);
         mAddNewAutoLayout = (LinearLayout) view.findViewById(R.id.add_automobile_layout);
+        mOverdueListView = (ListView) view.findViewById(R.id.overdue_items_listview);
     }
 
-    // TODO: set listenrs for the listview
     private void setOnClickListeners() {
         mAddNewAutoLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,15 +102,23 @@ public class MainFragment extends Fragment {
                 mListener.onCurrentAutoFragmentClicked();
             }
         });
+        mOverdueListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mListener.onOverdueListItemClicked(position);
+            }
+        });
     }
 
     public void setRegNumOwnedCarsList(ArrayList<String> regNumOwnedCarsList) {
         this.regNumOwnedCarsList = regNumOwnedCarsList;
     }
 
-    public interface newFragmentListener {
+    public interface OnNewFragmentListener {
         void onAddNewAutoFragmentClicked();
 
         void onCurrentAutoFragmentClicked();
+
+        void onOverdueListItemClicked(int position);
     }
 }

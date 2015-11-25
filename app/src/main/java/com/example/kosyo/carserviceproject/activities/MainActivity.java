@@ -16,7 +16,7 @@ import java.util.Arrays;
 /**
  * Created by kosyo on 17.11.15.
  */
-public class MainActivity extends BaseActivity implements MainFragment.newFragmentListener, CurrentAutosFragment.OnCarSelectedListener {
+public class MainActivity extends BaseActivity implements MainFragment.OnNewFragmentListener, CurrentAutosFragment.OnCarSelectedListener {
     // Dummy data - all detail car information
     private ArrayList<Vehicle> ownedCarsDetails;
     // Dummy data - list of all reg numbers of owned ownedCarsDetails
@@ -79,6 +79,27 @@ public class MainActivity extends BaseActivity implements MainFragment.newFragme
         fragmentTransaction
                 .addToBackStack(null)
                 .replace(R.id.main_framelayout, currentAutosFragment, CurrentAutosFragment.TAG)
+                .commit();
+    }
+
+    @Override
+    public void onOverdueListItemClicked(int position) {
+        // Make an arraylist with the attributes of the Vehicle object.
+        Vehicle userSelectedVehicle = ownedCarsDetails.get(position);
+        ArrayList<String> vehicleAttributesValues = new ArrayList<String>(Arrays.asList(
+                userSelectedVehicle.getmNextCarServiceDate(),
+                userSelectedVehicle.getmNextInsuranceDate(),
+                userSelectedVehicle.getmNextMotorCascoDate(),
+                userSelectedVehicle.getmNextCarServiceDate(),
+                userSelectedVehicle.getmNextRoadTaxDate()));
+        // Call the fragment
+        DetailAutoFragment detailAutoFragment = DetailAutoFragment.getInstance();
+        // Pass the arraylist to fragment
+        detailAutoFragment.setVehicleAttributesValues(vehicleAttributesValues);
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction
+                .addToBackStack(null)
+                .replace(R.id.main_framelayout, detailAutoFragment, DetailAutoFragment.TAG)
                 .commit();
     }
 
