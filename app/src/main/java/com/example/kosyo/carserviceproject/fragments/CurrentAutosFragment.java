@@ -24,6 +24,7 @@ public class CurrentAutosFragment extends Fragment {
     private OnCarSelectedListener mListener;
     private ArrayList<String> ownedCarsDetails;
     private ListView ownedAutosListView;
+
     // Singleton implementation
     private static CurrentAutosFragment instance;
 

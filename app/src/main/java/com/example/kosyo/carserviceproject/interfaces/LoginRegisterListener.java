@@ -6,5 +6,5 @@ package com.example.kosyo.carserviceproject.interfaces;
 
 //public interface LoginRegisterListener {
 //    void onLoginPrompted(String username, String password);
-//    void onRegisterCLicked();
+//    void onCreateRegisterationClicked();
 //}

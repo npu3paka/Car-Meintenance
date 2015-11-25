@@ -7,8 +7,9 @@ import android.os.Bundle;
 
 import com.example.kosyo.carserviceproject.R;
 import com.example.kosyo.carserviceproject.fragments.LoginFragment;
+import com.example.kosyo.carserviceproject.fragments.RegisterFragment;
 
-public class LoginActivity extends BaseActivity implements LoginFragment.LoginRegisterListener {
+public class LoginActivity extends BaseActivity implements LoginFragment.LoginRegisterListener, RegisterFragment.OnBtnRegisterListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +18,8 @@ public class LoginActivity extends BaseActivity implements LoginFragment.LoginRe
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.login_framelayout, LoginFragment.getInstance()).commit();
+        fragmentTransaction.add(R.id.login_framelayout, LoginFragment.getInstance(), LoginFragment.TAG)
+                .commit();
     }
 
     @Override
@@ -29,7 +31,15 @@ public class LoginActivity extends BaseActivity implements LoginFragment.LoginRe
     }
 
     @Override
-    public void onRegisterCLicked() {
-        //TODO Register fragment called
+    public void onCreateRegisterationClicked() {
+        RegisterFragment registerFragment = RegisterFragment.getInstance();
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.login_framelayout, registerFragment, RegisterFragment.TAG)
+                .commit();
+    }
+
+    @Override
+    public void onBtnRegisterClicked() {
+            // TODO: Do smth with the newly created account
     }
 }
