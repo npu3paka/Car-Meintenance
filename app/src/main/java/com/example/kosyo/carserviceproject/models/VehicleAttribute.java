@@ -3,7 +3,7 @@ package com.example.kosyo.carserviceproject.models;
 /**
  * Created by kosyo on 24.11.15.
  */
-public class VehicleAtribute {
+public class VehicleAttribute {
 
     private String mName;
     private String mValue;

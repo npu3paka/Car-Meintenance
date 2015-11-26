@@ -40,6 +40,6 @@ public class LoginActivity extends BaseActivity implements LoginFragment.LoginRe
 
     @Override
     public void onBtnRegisterClicked() {
-            // TODO: Do smth with the newly created account
+            // TODO: add the new user registration to database
     }
 }

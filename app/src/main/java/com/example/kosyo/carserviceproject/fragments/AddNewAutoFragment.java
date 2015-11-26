@@ -209,6 +209,11 @@ public class AddNewAutoFragment extends Fragment {
                 Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+
+        // Set the available dates to be after today
+        Calendar rightNow = Calendar.getInstance();
+        mDatePickerDialog.getDatePicker().setMinDate(rightNow.getTimeInMillis() - 1000);
+
         mDatePickerDialog.show();
     }
 

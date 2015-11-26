@@ -9,5 +9,11 @@
     <string name="add_automobile">Add automobile</string>
     <string name="current_automobiles">Current automobile</string>
     <string name="overdue">Overdue:</string>
+    <string name="user_email">com.example.kosyo.carserviceproject.fragments.PREFERENCE_KEY</string>
+    <string name="insurance">"Insurance valid to: "</string>
+    <string name="casco">"Motor casco valid to: "</string>
+    <string name="vehicle_service">"Next Vehicle Service: "</string>
+    <string name="road_tax">"Next Road Tax: "</string>
+    <string name="service_validity">"Service valid to: "</string>
 
 </resources>

@@ -17,7 +17,7 @@ import java.util.Arrays;
  * Created by kosyo on 17.11.15.
  */
 public class MainActivity extends BaseActivity implements MainFragment.OnNewFragmentListener,
-        CurrentAutosFragment.OnCarSelectedListener, AddNewAutoFragment.OnCreateVehicleClicked {
+        CurrentAutosFragment.OnCarSelectedListener, AddNewAutoFragment.OnCreateVehicleClicked, DetailAutoFragment.DataInteractionListener {
 
     // Dummy data - all detail car information
     private ArrayList<Vehicle> ownedCarsDetails;
@@ -25,6 +25,8 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
     private ArrayList<String> regNumOwnedVehicleList;
     // Hardcoded values of the vehicle attributes
     public static ArrayList<String> vehicleAttributesNames;
+    private int vehiclePositionInList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,18 +35,18 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
 
         ownedCarsDetails = new ArrayList<Vehicle>();
         // set values of car
-        Vehicle vehicle1 = new Vehicle("C9999CC", 120000, 124000, "5-12-2016", "5-8-2016", "5-7-2016", "5-7-2019", "5-12-2021");
-        Vehicle vehicle2 = new Vehicle("B7777BB", 840000, 96000, "14-03-2017", "5-12-2017", "1-1-2018", "1-1-2018", "1-1-2018");
+        Vehicle vehicle1 = new Vehicle("C9999CC", 120000, 124000, "5-12-2016", "5-8-2016", "5-7-2016", "5-7-2016", "5-12-2016");
+        Vehicle vehicle2 = new Vehicle("B7777BB", 840000, 96000, "14-03-2018", "5-12-2018", "1-1-2018", "1-1-2018", "1-1-2018");
         ownedCarsDetails.add(vehicle1);
         ownedCarsDetails.add(vehicle2);
 
         // set values of the
-        vehicleAttributesNames = new ArrayList<String>();
-        vehicleAttributesNames.add("Service valid to: ");
-        vehicleAttributesNames.add("Insurance valid to: ");
-        vehicleAttributesNames.add("Motor casco valid to: ");
-        vehicleAttributesNames.add("Next Vehicle Service: ");
-        vehicleAttributesNames.add("Next Road Tax: ");
+//        vehicleAttributesNames = new ArrayList<String>();
+//        vehicleAttributesNames.add("Service valid to: ");
+//        vehicleAttributesNames.add("Insurance valid to: ");
+//        vehicleAttributesNames.add("Motor casco valid to: ");
+//        vehicleAttributesNames.add("Next Vehicle Service: ");
+//        vehicleAttributesNames.add("Next Road Tax: ");
 
         // set values of regNumOwnedVehicleList
         regNumOwnedVehicleList = new ArrayList<>(Arrays.asList("A 0001 AA", "A 0002 AA"));
@@ -84,18 +86,13 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
 
     @Override
     public void onOverdueListItemClicked(int position) {
+        vehiclePositionInList = position;
         // Make an arraylist with the attributes of the Vehicle object.
-        Vehicle userSelectedVehicle = ownedCarsDetails.get(position);
-        ArrayList<String> vehicleAttributesValues = new ArrayList<String>(Arrays.asList(
-                userSelectedVehicle.getmNextCarServiceDate(),
-                userSelectedVehicle.getmNextInsuranceDate(),
-                userSelectedVehicle.getmNextMotorCascoDate(),
-                userSelectedVehicle.getmNextCarServiceDate(),
-                userSelectedVehicle.getmNextRoadTaxDate()));
+        Vehicle userSelectedVehicle = ownedCarsDetails.get(vehiclePositionInList);
         // Call the fragment
         DetailAutoFragment detailAutoFragment = DetailAutoFragment.getInstance();
-        // Pass the arraylist to fragment
-        detailAutoFragment.setVehicleAttributesValues(vehicleAttributesValues);
+        // Pass object to fragment
+        detailAutoFragment.setVehicle(userSelectedVehicle);
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction
                 .addToBackStack(null)
@@ -105,18 +102,13 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
 
     @Override
     public void onCarClicked(int position) {
-        // Make an arraylist with the attributes of the Vehicle object.
-        Vehicle userSelectedVehicle = ownedCarsDetails.get(position);
-        ArrayList<String> vehicleAttributesValues = new ArrayList<String>(Arrays.asList(
-                userSelectedVehicle.getmNextCarServiceDate(),
-                userSelectedVehicle.getmNextInsuranceDate(),
-                userSelectedVehicle.getmNextMotorCascoDate(),
-                userSelectedVehicle.getmNextCarServiceDate(),
-                userSelectedVehicle.getmNextRoadTaxDate()));
+        vehiclePositionInList = position;
+        // Get the selected by user object
+        Vehicle userSelectedVehicle = ownedCarsDetails.get(vehiclePositionInList);
         // Call the fragment
         DetailAutoFragment detailAutoFragment = DetailAutoFragment.getInstance();
-        // Pass the arraylist to fragment
-        detailAutoFragment.setVehicleAttributesValues(vehicleAttributesValues);
+        // Pass the object to fragment
+        detailAutoFragment.setVehicle(userSelectedVehicle);
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction
                 .addToBackStack(null)
@@ -142,4 +134,10 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.main_framelayout, mainFragment, MainFragment.TAG).commit();
     }
+
+    @Override
+    public void saveData(Vehicle vehicle) {
+        ownedCarsDetails.set(vehiclePositionInList, vehicle);
+    }
+
 }

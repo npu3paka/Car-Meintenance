@@ -1,6 +1,9 @@
 package com.example.kosyo.carserviceproject.fragments;
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,31 +11,55 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.kosyo.carserviceproject.R;
-import com.example.kosyo.carserviceproject.activities.MainActivity;
 import com.example.kosyo.carserviceproject.adapters.DetailArrayAdapter;
-import com.example.kosyo.carserviceproject.models.VehicleAtribute;
+import com.example.kosyo.carserviceproject.models.Vehicle;
+import com.example.kosyo.carserviceproject.models.VehicleAttribute;
 
-import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by kosyo on 20.11.15.
  */
-public class DetailAutoFragment extends Fragment {
+public class DetailAutoFragment extends Fragment implements DetailArrayAdapter.UpdatingListListener {
     public static final String TAG = DetailAutoFragment.class.getSimpleName();
     public DetailArrayAdapter mDetailArrayAdapter;
+    DataInteractionListener dataInteractionListener;
     private ListView lvDetailAuto;
     // Use as database
-    private ArrayList<VehicleAtribute> mCarInsuranceList;
-    private ArrayList<String> vehicleAttributesValues;
+    int size;
 
     // Singleton implementation
     private static DetailAutoFragment instance;
+    private Vehicle vehicle;
 
     public static DetailAutoFragment getInstance() {
         if (instance == null) {
             instance = new DetailAutoFragment();
         }
         return instance;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            dataInteractionListener = (DataInteractionListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            dataInteractionListener = (DataInteractionListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
     }
 
     @Override
@@ -49,27 +76,75 @@ public class DetailAutoFragment extends Fragment {
         // This will only show if there is no data in the listview
         lvDetailAuto.setEmptyView(view.findViewById(R.id.tvEmpty));
 
-        // Create a list of objects to later pass them in the arrayadapter
-        int size = MainActivity.vehicleAttributesNames.size();
-        mCarInsuranceList = new ArrayList<VehicleAtribute>();
-        for (int i = 0; i < size; i++) {
-            VehicleAtribute carInsurance = new VehicleAtribute();
-            carInsurance.setmName(MainActivity.vehicleAttributesNames.get(i));
-            carInsurance.setmValue(vehicleAttributesValues.get(i));
-            mCarInsuranceList.add(carInsurance);
-        }
-        //Log.d(TAG, "List : " + mCarInsuranceList.toString());
-        mDetailArrayAdapter = new DetailArrayAdapter(getActivity(), mCarInsuranceList);
+        mDetailArrayAdapter = new DetailArrayAdapter(getActivity(), vehicle.getVehicleAttributesList());
+
+        // Setting
+        mDetailArrayAdapter.setUpdatingListener(this);
+
         lvDetailAuto.setAdapter(mDetailArrayAdapter);
     }
 
-    public void setVehicleAttributesValues(ArrayList<String> vehicleAttributesValues) {
-        this.vehicleAttributesValues = vehicleAttributesValues;
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
-    // TODO: Repair
-//    public void onListItemClick(ListView l, View v, int position, long id) {
-//       // super.onListItemClick(l, v, position, id);
-//        // Todo: implement event of list item selected
-//    }
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
+
+
+    /**
+     * Method for displaying Data Picker
+     */
+    @Override
+    public void showSimpleDatePicker(final int position, String currentDate, final DetailArrayAdapter.DataUpdatingListener listener) {
+        DatePickerDialog.OnDateSetListener mDatePickerCallback = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(android.widget.DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                String mDay = getZeroPaddedNum(dayOfMonth);
+                String mMonth = getZeroPaddedNum(monthOfYear + 1);
+                String mYear = Integer.toString(year);
+                String newDateString = mDay + "-" + mMonth + "-" + mYear;
+                listener.dataUpdated(newDateString);
+
+                List<VehicleAttribute> vehicleAttributes = vehicle.getVehicleAttributesList();
+                vehicleAttributes.get(position).setmValue(newDateString);
+                //TODO Update on server
+                //then update the list
+                vehicle.updateVehicleByAttributes(vehicleAttributes);
+                dataInteractionListener.saveData(vehicle);
+            }
+        };
+
+        DatePickerDialog mDatePickerDialog = new DatePickerDialog(getActivity(),
+                mDatePickerCallback,
+                Calendar.getInstance().get(Calendar.YEAR),
+                Calendar.getInstance().get(Calendar.MONTH),
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+
+        // Set the available dates to be after today
+        Calendar rightNow = Calendar.getInstance();
+        mDatePickerDialog.getDatePicker().setMinDate(rightNow.getTimeInMillis() - 1000);
+
+        mDatePickerDialog.show();
+    }
+
+    /**
+     * method for taking the correct value of date picker
+     */
+    public static String getZeroPaddedNum(int num) {
+        String str;
+        if (num < 10 && num >= 0) {
+            str = "0" + num;
+        } else {
+            str = String.valueOf(num);
+        }
+        return str;
+    }
+
+    public interface DataInteractionListener {
+        void saveData(Vehicle vehicle);
+    }
+
 }

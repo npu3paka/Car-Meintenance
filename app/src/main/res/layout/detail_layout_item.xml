@@ -14,24 +14,26 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:padding="10dp"
-            android:text="left"/>
+            android:text="left"
+            android:clickable="false"/>
 
         <TextView
             android:id="@+id/tvDetailExparationDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:layout_toRightOf="@+id/tvDetailAtribute"
-            android:text="center"/>
+            android:layout_toLeftOf="@+id/ivDetailEdit"
+            android:gravity="center"
+            android:text="center"
+            android:clickable="false"/>
 
         <ImageView
             android:id="@+id/ivDetailEdit"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
-            android:layout_toRightOf="@+id/tvDetailExparationDate"
-           android:src="@mipmap/ic_editor_border_color"
-            />
+            android:foregroundGravity="center_vertical"
+            android:src="@mipmap/ic_editor_border_color" />
 
     </RelativeLayout>
 

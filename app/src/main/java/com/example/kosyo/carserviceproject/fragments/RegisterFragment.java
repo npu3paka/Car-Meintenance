@@ -107,8 +107,8 @@ public class RegisterFragment extends Fragment {
     }
 
     private void initializeLayoutElements(View view) {
-        mUsername = (EditText) view.findViewById(R.id.user_et);
-        mPassword = (EditText) view.findViewById(R.id.password_et);
+        mUsername = (EditText) view.findViewById(R.id.etEmail);
+        mPassword = (EditText) view.findViewById(R.id.etPassword);
         mPasswordConfirm = (EditText) view.findViewById(R.id.password_et_second);
         mBtnRegister = (Button) view.findViewById(R.id.btnRegister);
     }
