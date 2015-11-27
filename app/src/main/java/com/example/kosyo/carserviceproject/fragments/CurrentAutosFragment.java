@@ -82,7 +82,7 @@ public class CurrentAutosFragment extends Fragment {
         ownedAutosListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                mListener.onCarClicked(position);
+                mListener.onCarClickedInCurrentAutosFragmentList(position);
             }
         });
     }
@@ -91,7 +91,7 @@ public class CurrentAutosFragment extends Fragment {
 //    @Override
 //    public void onListItemClick(ListView l, View v, int position, long id) {
 //        super.onListItemClick(l, v, position, id);
-//        mListener.onCarClicked(position);
+//        mListener.onCarClickedInCurrentAutosFragmentList(position);
 //    }
 
     public void setCars(ArrayList<String> cars) {
@@ -100,6 +100,6 @@ public class CurrentAutosFragment extends Fragment {
 
 
     public interface OnCarSelectedListener {
-        void onCarClicked(int positon);
+        void onCarClickedInCurrentAutosFragmentList(int positon);
     }
 }

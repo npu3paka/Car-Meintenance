@@ -24,18 +24,14 @@ public class DetailArrayAdapter extends ArrayAdapter<VehicleAttribute> {
     private VehicleAttribute mVehicleAttributeObj;
     private UpdatingListListener updatingListener;
 
-    public void setUpdatingListener(UpdatingListListener updatingListener) {
-        this.updatingListener = updatingListener;
-    }
-
-    public interface UpdatingListListener {
-        void showSimpleDatePicker(final int position, String s, DataUpdatingListener listener);
-    }
-
     public DetailArrayAdapter(Activity context, ArrayList<VehicleAttribute> vehicleAtributeList) {
         super(context, R.layout.detail_layout_item, vehicleAtributeList);
         this.activity = context;
         this.mVehicleAtributeList = vehicleAtributeList;
+    }
+
+    public void setUpdatingListener(UpdatingListListener updatingListener) {
+        this.updatingListener = updatingListener;
     }
 
     @Override
@@ -80,6 +76,10 @@ public class DetailArrayAdapter extends ArrayAdapter<VehicleAttribute> {
         });
 
         return rowView;
+    }
+
+    public interface UpdatingListListener {
+        void showSimpleDatePicker(final int position, String s, DataUpdatingListener listener);
     }
 
     public interface DataUpdatingListener {

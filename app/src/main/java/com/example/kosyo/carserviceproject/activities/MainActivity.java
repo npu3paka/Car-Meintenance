@@ -20,8 +20,8 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
         CurrentAutosFragment.OnCarSelectedListener, AddNewAutoFragment.OnCreateVehicleClicked, DetailAutoFragment.DataInteractionListener {
 
     // Dummy data - all detail car information
-    private ArrayList<Vehicle> ownedCarsDetails;
-    // Dummy data - list of all reg numbers of owned ownedCarsDetails
+    private ArrayList<Vehicle> ownedUserVehicles;
+    // Dummy data - list of all reg numbers of owned ownedUserVehicles
     private ArrayList<String> regNumOwnedVehicleList;
     // Hardcoded values of the vehicle attributes
     public static ArrayList<String> vehicleAttributesNames;
@@ -33,12 +33,12 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ownedCarsDetails = new ArrayList<Vehicle>();
+        ownedUserVehicles = new ArrayList<Vehicle>();
         // set values of car
         Vehicle vehicle1 = new Vehicle("C9999CC", 120000, 124000, "5-12-2016", "5-8-2016", "5-7-2016", "5-7-2016", "5-12-2016");
         Vehicle vehicle2 = new Vehicle("B7777BB", 840000, 96000, "14-03-2018", "5-12-2018", "1-1-2018", "1-1-2018", "1-1-2018");
-        ownedCarsDetails.add(vehicle1);
-        ownedCarsDetails.add(vehicle2);
+        ownedUserVehicles.add(vehicle1);
+        ownedUserVehicles.add(vehicle2);
 
         // set values of the
 //        vehicleAttributesNames = new ArrayList<String>();
@@ -55,8 +55,8 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
         MainFragment mainFragment = MainFragment.getInstance();
         mainFragment.setRegNumOwnedCarsList(regNumOwnedVehicleList);
 
-        CurrentAutosFragment currentAutosFragment = CurrentAutosFragment.getInstance();
-        currentAutosFragment.setCars(regNumOwnedVehicleList);
+        //CurrentAutosFragment currentAutosFragment = CurrentAutosFragment.getInstance();
+     //   currentAutosFragment.setCars(regNumOwnedVehicleList);
 
         // Load the default fragment
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -77,6 +77,7 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
     @Override
     public void onCurrentAutoFragmentClicked() {
         CurrentAutosFragment currentAutosFragment = CurrentAutosFragment.getInstance();
+        currentAutosFragment.setCars(regNumOwnedVehicleList);
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction
                 .addToBackStack(null)
@@ -88,11 +89,11 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
     public void onOverdueListItemClicked(int position) {
         vehiclePositionInList = position;
         // Make an arraylist with the attributes of the Vehicle object.
-        Vehicle userSelectedVehicle = ownedCarsDetails.get(vehiclePositionInList);
+        Vehicle userSelectedVehicle = ownedUserVehicles.get(vehiclePositionInList);
         // Call the fragment
         DetailAutoFragment detailAutoFragment = DetailAutoFragment.getInstance();
         // Pass object to fragment
-        detailAutoFragment.setVehicle(userSelectedVehicle);
+        detailAutoFragment.setVehicleObj(userSelectedVehicle);
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction
                 .addToBackStack(null)
@@ -101,14 +102,14 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
     }
 
     @Override
-    public void onCarClicked(int position) {
+    public void onCarClickedInCurrentAutosFragmentList(int position) {
         vehiclePositionInList = position;
         // Get the selected by user object
-        Vehicle userSelectedVehicle = ownedCarsDetails.get(vehiclePositionInList);
+        Vehicle userSelectedVehicle = ownedUserVehicles.get(vehiclePositionInList);
         // Call the fragment
         DetailAutoFragment detailAutoFragment = DetailAutoFragment.getInstance();
         // Pass the object to fragment
-        detailAutoFragment.setVehicle(userSelectedVehicle);
+        detailAutoFragment.setVehicleObj(userSelectedVehicle);
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction
                 .addToBackStack(null)
@@ -119,7 +120,7 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
     @Override
     public void onAddVehicleClicked(Vehicle vehicle) {
         // Add new user vehicle to database
-        ownedCarsDetails.add(vehicle);
+        ownedUserVehicles.add(vehicle);
         regNumOwnedVehicleList.add(vehicle.getmRegistrationNum());
 
         // Close AddNewAutoFragment and open Main Fragment again
@@ -137,7 +138,7 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
 
     @Override
     public void saveData(Vehicle vehicle) {
-        ownedCarsDetails.set(vehiclePositionInList, vehicle);
+        ownedUserVehicles.set(vehiclePositionInList, vehicle);
     }
 
 }

@@ -11,7 +11,7 @@ import java.util.List;
  * the user add
  */
 public class Vehicle {
-    private static ArrayList<String> vehicleAttributesNames = new ArrayList<>();
+    private static ArrayList<String> vehicleAttributesNames; // = new ArrayList<>();
 //    = Arrays.asList(
 //            CarServiceApplication.getAppContext().getString(R.string.service_validity),
 //            CarServiceApplication.getAppContext().getString(R.string.insurance),
@@ -125,6 +125,8 @@ public class Vehicle {
                 mNextYearlyTechnicalServiceDate,
                 mNextRoadTaxDate));
 
+
+        // Create arraylist of object of type VehivleAttribute to later return the arraylist
         ArrayList<VehicleAttribute> vehicleAttributesList = new ArrayList<VehicleAttribute>();
 
         // For every vehicle attribute create vehicle attribute object
@@ -137,11 +139,11 @@ public class Vehicle {
         return vehicleAttributesList;
     }
 
-    public void updateVehicleByAttributes(List<VehicleAttribute> vehicleAttributes) {
-        mNextServiceDate = vehicleAttributes.get(0).getmValue();
-        mNextInsuranceDate = vehicleAttributes.get(1).getmValue();
-        mNextMotorCascoDate = vehicleAttributes.get(2).getmValue();
-        mNextYearlyTechnicalServiceDate = vehicleAttributes.get(3).getmValue();
-        mNextRoadTaxDate = vehicleAttributes.get(4).getmValue();
+    public void updateVehicleByAttributes(List<VehicleAttribute> vehicleAttributeList) {
+        mNextServiceDate = vehicleAttributeList.get(0).getmValue();
+        mNextInsuranceDate = vehicleAttributeList.get(1).getmValue();
+        mNextMotorCascoDate = vehicleAttributeList.get(2).getmValue();
+        mNextYearlyTechnicalServiceDate = vehicleAttributeList.get(3).getmValue();
+        mNextRoadTaxDate = vehicleAttributeList.get(4).getmValue();
     }
 }

@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,15 +25,13 @@ import java.util.List;
 public class DetailAutoFragment extends Fragment implements DetailArrayAdapter.UpdatingListListener {
     public static final String TAG = DetailAutoFragment.class.getSimpleName();
     public DetailArrayAdapter mDetailArrayAdapter;
-    DataInteractionListener dataInteractionListener;
+    public DataInteractionListener dataInteractionListener;
     private ListView lvDetailAuto;
-    // Use as database
+    private Vehicle vehicleObj;
     int size;
 
     // Singleton implementation
     private static DetailAutoFragment instance;
-    private Vehicle vehicle;
-
     public static DetailAutoFragment getInstance() {
         if (instance == null) {
             instance = new DetailAutoFragment();
@@ -76,7 +75,7 @@ public class DetailAutoFragment extends Fragment implements DetailArrayAdapter.U
         // This will only show if there is no data in the listview
         lvDetailAuto.setEmptyView(view.findViewById(R.id.tvEmpty));
 
-        mDetailArrayAdapter = new DetailArrayAdapter(getActivity(), vehicle.getVehicleAttributesList());
+        mDetailArrayAdapter = new DetailArrayAdapter(getActivity(), vehicleObj.getVehicleAttributesList());
 
         // Setting
         mDetailArrayAdapter.setUpdatingListener(this);
@@ -84,13 +83,9 @@ public class DetailAutoFragment extends Fragment implements DetailArrayAdapter.U
         lvDetailAuto.setAdapter(mDetailArrayAdapter);
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
 
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
+    public void setVehicleObj(Vehicle vehicleObj) {
+        this.vehicleObj = vehicleObj;
     }
 
 
@@ -108,12 +103,31 @@ public class DetailAutoFragment extends Fragment implements DetailArrayAdapter.U
                 String newDateString = mDay + "-" + mMonth + "-" + mYear;
                 listener.dataUpdated(newDateString);
 
-                List<VehicleAttribute> vehicleAttributes = vehicle.getVehicleAttributesList();
-                vehicleAttributes.get(position).setmValue(newDateString);
+                List<VehicleAttribute> vehicleAttributeList = vehicleObj.getVehicleAttributesList();
+
+                // Logs
+                String val;
+                for(int i=0; i< vehicleAttributeList.size(); i++){
+                    val =  vehicleAttributeList.get(i).getmValue();
+                    Log.v(TAG, "Val: "+ i + " :" + val);
+                }
+                String oldDate = vehicleAttributeList.get(position).getmValue();
+                Log.i(TAG, "OLD DATA :" + oldDate);
+
+
+                vehicleAttributeList.get(position).setmValue(newDateString);
                 //TODO Update on server
                 //then update the list
-                vehicle.updateVehicleByAttributes(vehicleAttributes);
-                dataInteractionListener.saveData(vehicle);
+                vehicleObj.updateVehicleByAttributes(vehicleAttributeList);
+
+                // Logs
+                String str2;
+                for(int i=0; i< vehicleAttributeList.size(); i++){
+                    str2 =  vehicleAttributeList.get(i).getmValue();
+                    Log.v(TAG, " New Val: "+ i + " :" + str2);
+                }
+
+                dataInteractionListener.saveData(vehicleObj);
             }
         };
 

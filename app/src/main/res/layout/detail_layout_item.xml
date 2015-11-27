@@ -13,19 +13,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:clickable="true"
             android:padding="10dp"
-            android:text="left"
-            android:clickable="false"/>
+            android:text="left" />
 
         <TextView
             android:id="@+id/tvDetailExparationDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/tvDetailAtribute"
             android:layout_toLeftOf="@+id/ivDetailEdit"
+            android:layout_toRightOf="@+id/tvDetailAtribute"
+            android:clickable="true"
             android:gravity="center"
-            android:text="center"
-            android:clickable="false"/>
+            android:text="center" />
 
         <ImageView
             android:id="@+id/ivDetailEdit"
