@@ -18,6 +18,7 @@
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:gravity="center"
+        android:inputType="textEmailAddress"
         android:hint="@string/user_tv_hint" />
 
     <EditText

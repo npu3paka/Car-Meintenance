@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kosyo.carserviceproject.R;
 import com.example.kosyo.carserviceproject.models.Vehicle;
@@ -46,7 +47,7 @@ public class AddNewAutoFragment extends Fragment {
     private String mNextService;
     private String mInsurance;
     private String mMotorCasco;
-    private String mCarService;
+    private String mNextYearlyTechnicalServiceDate;
     private String mRoadTax;
 
     @Override
@@ -87,17 +88,6 @@ public class AddNewAutoFragment extends Fragment {
         setOnClickListeners();
 
     }
-
-    //    private boolean validateInput() {
-//        if (etRegistrationNum != null && etCurrentKm != null && tvKmToNextService != null) {
-//            if (!etRegistrationNum.toString().equals("") &&
-//                    !etCurrentKm.getText().toString().equals("") &&
-//                    !tvKmToNextService.getText().toString().equals("")) {
-//            }
-//            return true;
-//        }
-//        return false;
-//    }
 
     private void initializeLayoutElements(View view) {
         btnCreateVehicle = (Button) view.findViewById(R.id.btnCreateVehicle);
@@ -151,23 +141,16 @@ public class AddNewAutoFragment extends Fragment {
         btnCreateVehicle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //boolean isInputValid = validateInput();
-                // TODO: do smth with the validation
-
                 //Create new vehicle object and pass it to the activity
-                mRegistrationNum = etRegistrationNum.getText().toString();
-                mCurrentKm = Integer.parseInt(etCurrentKm.getText().toString());
-                mKmToNextService = Integer.parseInt(tvKmToNextService.getText().toString());
-                mInsurance = tvInsurance.getText().toString();
-                mNextService = tvNextService.getText().toString();
-                mMotorCasco = tvMotorCasco.getText().toString();
-                mCarService = tvCarService.getText().toString();
-                mRoadTax = tvRoadTax.getText().toString();
 
+                boolean isInputValid = isInputValid();
+                // TODO: Uncomment before putting in production
+                // if (isInputValid) {
                 mVehicle = new Vehicle(mRegistrationNum, mCurrentKm, mKmToNextService,
-                        mInsurance, mNextService, mMotorCasco, mCarService, mRoadTax);
+                        mInsurance, mNextService, mMotorCasco, mNextYearlyTechnicalServiceDate, mRoadTax);
 
                 mListener.onAddVehicleClicked(mVehicle);
+                // }
             }
         });
 
@@ -179,10 +162,115 @@ public class AddNewAutoFragment extends Fragment {
         });
     }
 
+    private boolean isInputValid() {
+        // Get input from fragment
+        mRegistrationNum = etRegistrationNum.getText().toString();
+        mInsurance = tvInsurance.getText().toString();
+        mNextService = tvNextService.getText().toString();
+        mMotorCasco = tvMotorCasco.getText().toString();
+        mNextYearlyTechnicalServiceDate = tvCarService.getText().toString();
+        mRoadTax = tvRoadTax.getText().toString();
+
+        if (mRegistrationNum == null || mRegistrationNum.length() == 0) {
+            Toast toast = Toast.makeText(getActivity(), "Registration number filed is empty", Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        }
+
+        // Check first if user set values in etCurrentKm and tvKmToNextService
+        // before trying to parse them to int
+        String valueCurrentKmString = etCurrentKm.getText().toString();
+        if (valueCurrentKmString == null || valueCurrentKmString.length() == 0) {
+            Toast toast = Toast.makeText(getActivity(), "Enter the number of km your car is", Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        } else {
+            try {
+                // User inputted some value. Get it and parcs it to int
+                mCurrentKm = Integer.parseInt(valueCurrentKmString);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+
+        String valueKmToNextServiceString = tvKmToNextService.getText().toString();
+        if (valueKmToNextServiceString == null || valueKmToNextServiceString.length() == 0) {
+            Toast toast = Toast.makeText(getActivity(), "Enter on what km you car needs to be serviced", Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        } else {
+            try {
+                // User inputted some value. Get it and parcs it to int
+                mKmToNextService = Integer.parseInt(valueKmToNextServiceString);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (mCurrentKm < 0)
+
+        {
+            Toast toast = Toast.makeText(getActivity(), "Km must be positive", Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        }
+
+        if (mKmToNextService < mCurrentKm)
+
+        {
+            Toast toast = Toast.makeText(getActivity(), "Km for next service must be greater than  Current killometers", Toast.LENGTH_LONG);
+            toast.show();
+            return false;
+        }
+
+        if (mNextService == null || mNextService.length() == 0)
+
+        {
+            Toast toast = Toast.makeText(getActivity(), "Set next service data", Toast.LENGTH_LONG);
+            toast.show();
+            return false;
+        }
+
+        if (mInsurance == null || mInsurance.length() == 0)
+
+        {
+            Toast toast = Toast.makeText(getActivity(), "Set next insurance data", Toast.LENGTH_LONG);
+            toast.show();
+            return false;
+        }
+
+        if (mMotorCasco == null || mMotorCasco.length() == 0)
+
+        {
+            Toast toast = Toast.makeText(getActivity(), "Set next motor casco data", Toast.LENGTH_LONG);
+            toast.show();
+            return false;
+        }
+
+        if (mNextYearlyTechnicalServiceDate == null || mNextYearlyTechnicalServiceDate.length() == 0)
+
+        {
+            Toast toast = Toast.makeText(getActivity(), "Set next yearly technical service data", Toast.LENGTH_LONG);
+            toast.show();
+            return false;
+        }
+
+        if (mRoadTax == null || mRoadTax.length() == 0)
+
+        {
+            Toast toast = Toast.makeText(getActivity(), "Set next road tax data", Toast.LENGTH_LONG);
+            toast.show();
+            return false;
+        }
+        // Input is valid
+        return true;
+    }
+
 
     /**
      * method for taking the correct value of date picker
      */
+
     public static String getZeroPaddedNum(int num) {
         String str;
         if (num < 10 && num >= 0) {

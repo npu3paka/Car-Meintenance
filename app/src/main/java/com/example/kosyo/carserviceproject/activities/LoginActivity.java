@@ -32,9 +32,11 @@ public class LoginActivity extends BaseActivity implements LoginFragment.LoginRe
 
     @Override
     public void onCreateRegisterationClicked() {
-        RegisterFragment registerFragment = RegisterFragment.getInstance();
+        RegisterFragment registerFragment = new RegisterFragment();
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.login_framelayout, registerFragment, RegisterFragment.TAG)
+        fragmentTransaction
+                .addToBackStack(null)
+                .replace(R.id.login_framelayout, registerFragment, RegisterFragment.TAG)
                 .commit();
     }
 

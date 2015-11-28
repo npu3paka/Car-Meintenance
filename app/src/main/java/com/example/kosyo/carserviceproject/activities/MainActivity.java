@@ -1,5 +1,6 @@
 package com.example.kosyo.carserviceproject.activities;
 
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
@@ -123,17 +124,16 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
         ownedUserVehicles.add(vehicle);
         regNumOwnedVehicleList.add(vehicle.getmRegistrationNum());
 
-        // Close AddNewAutoFragment and open Main Fragment again
-        MainFragment mainFragment = MainFragment.getInstance();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.main_framelayout, mainFragment, MainFragment.TAG).commit();
+        // Open Main Fragment again
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.popBackStack();
     }
 
     @Override
     public void onCancelClicked() {
-        MainFragment mainFragment = MainFragment.getInstance();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.replace(R.id.main_framelayout, mainFragment, MainFragment.TAG).commit();
+        // Open Main Fragment again
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.popBackStack();
     }
 
     @Override

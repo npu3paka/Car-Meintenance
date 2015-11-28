@@ -20,21 +20,11 @@ import com.example.kosyo.carserviceproject.R;
  */
 public class RegisterFragment extends Fragment {
     public final static String TAG = RegisterFragment.class.getSimpleName();
-    private OnBtnRegisterListener mListener;
     EditText mUsername;
     EditText mPassword;
     EditText mPasswordConfirm;
     Button mBtnRegister;
-
-    // Singleton implementation
-    private static RegisterFragment instance;
-
-    public static RegisterFragment getInstance() {
-        if (instance == null) {
-            instance = new RegisterFragment();
-        }
-        return instance;
-    }
+    private OnBtnRegisterListener mListener;
 
     @Override
     public void onAttach(Activity activity) {
@@ -58,52 +48,20 @@ public class RegisterFragment extends Fragment {
         }
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_register, container, false);
+        return view;
+    }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         initializeLayoutElements(view);
 
-        final String username = mUsername.getText().toString();
-        final String password = mPassword.getText().toString();
-        final String passwordConfirm = mPasswordConfirm.getText().toString();
-
-        mBtnRegister.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                boolean isValid = isValuesValid(username, password, passwordConfirm);
-                if (isValid) {
-                    mListener.onBtnRegisterClicked();
-                }
-            }
-        });
-    }
-
-    private boolean isValuesValid(String email, String password, String passwordSecondTime) {
-        // is email and password valid
-        if (email == null && email.length() == 0) {
-            Toast toast = Toast.makeText(getActivity(), "Your e-mail field is empty", Toast.LENGTH_SHORT);
-            toast.show();
-            return false;
-        } else if (isEmailValid(email)) {
-            // if mail is not valid
-            Toast toast = Toast.makeText(getActivity(), "Invalid e-mail", Toast.LENGTH_SHORT);
-            toast.show();
-            return false;
-        } else if (password == null && password.length() == 0) {
-            Toast toast = Toast.makeText(getActivity(), "Your password field is empty", Toast.LENGTH_SHORT);
-            toast.show();
-            return false;
-        } else if (password.length() < 6) {
-            Toast toast = Toast.makeText(getActivity(), "Your password must be atleast 6 characters", Toast.LENGTH_SHORT);
-            toast.show();
-            return false;
-        } else if (password.equals(passwordSecondTime)) {
-            // All data is valid
-            return true;
-        }
-        return false;
+        setOnClickListeners(view);
     }
 
     private void initializeLayoutElements(View view) {
@@ -113,15 +71,57 @@ public class RegisterFragment extends Fragment {
         mBtnRegister = (Button) view.findViewById(R.id.btnRegister);
     }
 
-    private boolean isEmailValid(String email) {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    void setOnClickListeners(View view) {
+        mBtnRegister.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Get values from EditTexts
+                final String username = mUsername.getText().toString();
+                final String password = mPassword.getText().toString();
+                final String passwordConfirm = mPasswordConfirm.getText().toString();
+
+                boolean isValid = isValuesValid(username, password, passwordConfirm);
+
+                if (isValid) {
+                    mListener.onBtnRegisterClicked();
+                }
+            }
+        });
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_register, container, false);
-        return view;
+    private boolean isValuesValid(String email, String password, String passwordSecondTime) {
+        // is email and password valid
+        if (email == null || email.length() == 0) {
+            Toast toast = Toast.makeText(getActivity(), "Your e-mail field is empty", Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        }
+        if (!isEmailValid(email)) {
+            // if mail is not valid
+            Toast toast = Toast.makeText(getActivity(), "Invalid e-mail", Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        }
+        if (password == null || password.length() == 0) {
+            Toast toast = Toast.makeText(getActivity(), "Your password field is empty", Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        }
+        if (password.length() < 6) {
+            Toast toast = Toast.makeText(getActivity(), "Your password must be atleast 6 characters", Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        }
+        if (!password.equals(passwordSecondTime)) {
+            Toast toast = Toast.makeText(getActivity(), "You passwords doesn't match", Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isEmailValid(String email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     public interface OnBtnRegisterListener {

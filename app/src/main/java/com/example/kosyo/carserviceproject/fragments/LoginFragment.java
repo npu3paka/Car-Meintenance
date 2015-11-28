@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.kosyo.carserviceproject.R;
 
@@ -67,11 +68,14 @@ public class LoginFragment extends Fragment {
 
         etEmail = (EditText) view.findViewById(R.id.etEmail);
         etPassword = (EditText) view.findViewById(R.id.etPassword);
+        Integer val = Integer.MAX_VALUE;
+        int newint = val;
+
 
         // Sets the user email to the TextView if previously
         // was save in SharedPreferences
         sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        if(sharedPreferences.contains(getString(R.string.user_email))) {
+        if (sharedPreferences.contains(getString(R.string.user_email))) {
             String defaultEmail = "";
             mEmail = sharedPreferences.getString(getString(R.string.user_email), defaultEmail);
             etEmail.setText(mEmail);
@@ -91,12 +95,17 @@ public class LoginFragment extends Fragment {
                 // Get values from the EditTexts
                 mEmail = etEmail.getText().toString();
                 mPassword = etPassword.getText().toString();
-                // Save email in SharedPreferences
 
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(getString(R.string.user_email), mEmail);
-                editor.commit();
-                mListener.onLoginPrompted(mEmail, mPassword);
+                boolean isInputValid = isValuesValid(mEmail, mPassword);
+
+                // TODO: Uncomment validation check before uploading to stable release
+              //  if (isInputValid) {
+                    // Save email in SharedPreferences
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(getString(R.string.user_email), mEmail);
+                    editor.commit();
+                    mListener.onLoginPrompted(mEmail, mPassword);
+             //   }
             }
         });
 
@@ -107,6 +116,38 @@ public class LoginFragment extends Fragment {
                 mListener.onCreateRegisterationClicked();
             }
         });
+    }
+
+
+    private boolean isValuesValid(String email, String password) {
+        // is email and password valid
+        if (email == null || email.length() == 0) {
+            Toast toast = Toast.makeText(getActivity(), "Your e-mail field is empty", Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        }
+        if (!isEmailValid(email)) {
+            // if mail is not valid
+            Toast toast = Toast.makeText(getActivity(), "Invalid e-mail", Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        }
+        if (password == null || password.length() == 0) {
+            Toast toast = Toast.makeText(getActivity(), "Your password field is empty", Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        }
+        if (password.length() < 6) {
+            Toast toast = Toast.makeText(getActivity(), "Your password must be atleast 6 characters", Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        }
+        // Input is valid
+        return true;
+    }
+
+    private boolean isEmailValid(String email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
 
