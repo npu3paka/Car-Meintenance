@@ -12,8 +12,8 @@
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:gravity="center"
-        android:inputType="textEmailAddress"
-        android:hint="@string/user_tv_hint" />
+        android:hint="@string/user_tv_hint"
+        android:inputType="textEmailAddress" />
 
     <EditText
         android:id="@+id/etPassword"
@@ -43,7 +43,8 @@
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:layout_marginTop="15dp"
-        android:background="#ff6d00"
-        android:text="@string/register_button_title" />
+        android:background="#bdbdbd"
+        android:text="@string/register_button_title"
+        android:textColor="#ffffff" />
 
 </LinearLayout>

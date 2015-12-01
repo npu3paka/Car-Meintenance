@@ -1,114 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Add new auto to existing"
-        android:textSize="15sp" />
-
-    <EditText
-        android:id="@+id/etRegisrationNum"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:hint="Car registration number" />
 
-    <EditText
-        android:id="@+id/etCurrentKm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:hint="Total mileage"
-        android:inputType="numberSigned" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/add_new_auto_to_existing"
+            android:textSize="24sp" />
 
-    <EditText
-        android:id="@+id/etKmToNextService"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:hint="Km to next service"
-        android:inputType="numberSigned" />
+        <EditText
+            android:id="@+id/etRegisrationNum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-    <TextView
-        android:id="@+id/etNextService"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="15dp"
-        android:hint="next service expiration date" />
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:hint="@string/car_registration_number" />
 
-    <TextView
-        android:id="@+id/etInsurance"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="15dp"
-        android:hint="insurance expiration date" />
-
-    <TextView
-        android:id="@+id/etMotorCasco"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="15dp"
-        android:hint="motor casco expiration date" />
-
-    <TextView
-        android:id="@+id/etCarService"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="15dp"
-        android:hint="car service expiration date" />
-
-    <TextView
-        android:id="@+id/etRoadTax"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="15dp"
-        android:hint="road tax expiration date" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btnCreateVehicle"
-            android:layout_width="0dp"
+        <EditText
+            android:id="@+id/etCurrentKm"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
-            android:layout_weight="1"
-            android:background="#00c853"
-            android:text="create"
-            android:textColor="#ffffff" />
+            android:hint="@string/hint_total_milage"
+            android:inputType="numberSigned" />
 
-        <Button
-            android:id="@+id/btnCancel"
-            android:layout_width="0dp"
+        <EditText
+            android:id="@+id/etKmToNextService"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
             android:layout_marginRight="25dp"
-            android:layout_weight="1"
-            android:background="#bdbdbd"
-            android:text="cancel"
-            android:textColor="#ffffff" />
+            android:hint="@string/hint_km_next_service"
+            android:inputType="numberSigned" />
+
+        <EditText
+            android:id="@+id/etNextService"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="15dp"
+            android:editable="false"
+            android:focusable="false"
+            android:hint="@string/hint_service_date" />
+
+        <EditText
+            android:id="@+id/etInsurance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="15dp"
+            android:editable="false"
+            android:focusable="false"
+            android:hint="@string/hint_insurance_date" />
+
+        <EditText
+            android:id="@+id/etMotorCasco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="15dp"
+            android:editable="false"
+            android:focusable="false"
+            android:hint="@string/hint_casko_date" />
+
+        <EditText
+            android:id="@+id/etCarService"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="15dp"
+            android:editable="false"
+            android:hint="@string/hint_annual_service" />
+
+        <EditText
+            android:id="@+id/etRoadTax"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginTop="15dp"
+            android:editable="false"
+            android:focusable="false"
+            android:hint="@string/hint_road_tax" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_weight="1"
+                android:background="#ffffff"
+                android:text="@string/cancel" />
+
+            <Button
+                android:id="@+id/btnCreateVehicle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_weight="1"
+                android:background="#f44336"
+                android:text="@string/create"
+                android:textColor="#ffffff" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
-</LinearLayout>
+
+</ScrollView>

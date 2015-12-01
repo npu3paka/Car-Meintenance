@@ -1,19 +1,35 @@
 <resources>
-    <string name="app_name">Car Service</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="app_name" translatable="false">Fleet care pro</string>
+    <string name="title_activity_main" translatable="false">MainActivity</string>
     <string name="login_button_title">login</string>
     <string name="register_button_title">register</string>
     <string name="user_tv_hint">e-mail</string>
     <string name="password_et_hint">password</string>
     <string name="password_et_confirm_hint">Confirm password</string>
-    <string name="add_automobile">Add automobile</string>
+    <string name="add_automobile">Add vehicle</string>
     <string name="current_automobiles">Current automobile</string>
     <string name="overdue">Overdue:</string>
-    <string name="user_email">com.example.kosyo.carserviceproject.fragments.PREFERENCE_KEY</string>
-    <string name="insurance">"Insurance valid to: "</string>
+    <string name="user_email" translatable="false">com.example.kosyo.carserviceproject.fragments.PREFERENCE_KEY</string>
+    <string name="insurance" translatable="false">Insurance valid to</string>
     <string name="casco">"Motor casco valid to: "</string>
-    <string name="vehicle_service">"Next Vehicle Service: "</string>
-    <string name="road_tax">"Next Road Tax: "</string>
-    <string name="service_validity">"Service valid to: "</string>
+    <string name="vehicle_service" translatable="false">"Next Vehicle Service: "</string>
+    <string name="road_tax" translatable="false">"Next Road Tax: "</string>
+    <string name="service_validity" translatable="false">"Service valid to: "</string>
+    <string name="add_new_auto_to_existing">Add new auto to existing</string>
+    <string name="car_registration_number">Car registration number</string>
+    <string name="hint_total_milage">Total mileage</string>
+    <string name="hint_km_next_service">Km to next service</string>
+    <string name="hint_service_date">next service expiration date</string>
+    <string name="hint_insurance_date">insurance expiration date</string>
+    <string name="hint_casko_date">motor casco expiration date</string>
+    <string name="hint_annual_service">car annual expiration date</string>
+    <string name="hint_road_tax">road tax expiration date</string>
+    <string name="create">create</string>
+    <string name="cancel">cancel</string>
+    <string name="my_vehicles">My Vehicles</string>
+    <string name="no_data">No data</string>
+    <string name="details">Details</string>
+    <string name="register">Register</string>
+    <string name="create_new_registration">Create new registration</string>
 
 </resources>

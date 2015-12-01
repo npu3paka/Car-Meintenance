@@ -1,16 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.kosyo.carserviceproject">
+    package="com.awesome.kosyo.carserviceproject">
 
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- For GCM
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <permission
+        android:name="com.awesome.kosyo.carserviceproject.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.awesome.kosyo.carserviceproject.permission.C2D_MESSAGE" />
+   -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.example.gcm" />
+            </intent-filter>
+        </receiver>
+        <!-- For GCM
+                <service
+                    android:name="com.example.MyGcmListenerService"
+                    android:exported="false">
+                    <intent-filter>
+                        <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                    </intent-filter>
+                </service>
+
+                <service
+                    android:name="com.example.MyInstanceIDListenerService"
+                    android:exported="false">
+                    <intent-filter>
+                        <action android:name="com.google.android.gms.iid.InstanceID" />
+                        <!- - Support pre-4.4 KitKat devices - ->
+        <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+         </intent-filter>
+        </service>
+        -->
 
         <activity
-            android:name=".activities.LoginActivity"
+            android:name="com.awesome.kosyo.carserviceproject.activities.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +58,7 @@
         </activity>
 
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.awesome.kosyo.carserviceproject.activities.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme"></activity>
 

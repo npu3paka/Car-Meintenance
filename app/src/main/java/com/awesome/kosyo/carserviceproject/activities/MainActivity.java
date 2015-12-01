@@ -33,6 +33,7 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().setTitle("Fleet care pro");
 
         ownedUserVehicles = new ArrayList<Vehicle>();
         // set values of car
@@ -57,7 +58,7 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
         mainFragment.setRegNumOwnedCarsList(regNumOwnedVehicleList);
 
         //CurrentAutosFragment currentAutosFragment = CurrentAutosFragment.getInstance();
-     //   currentAutosFragment.setCars(regNumOwnedVehicleList);
+        //   currentAutosFragment.setCars(regNumOwnedVehicleList);
 
         // Load the default fragment
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();

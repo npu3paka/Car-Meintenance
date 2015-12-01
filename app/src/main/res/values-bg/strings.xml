@@ -1,2 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_name">SmartPril</string>
+    <string name="add_automobile">Добави превозно средство</string>
+    <string name="add_new_auto_to_existing">Добави ново превозно средство</string>
+    <string name="cancel">отказ</string>
+    <string name="car_registration_number">Регистрационен номер</string>
+    <string name="casco">Застраховка Каско</string>
+    <string name="create">Създай</string>
+    <string name="create_new_registration">Създай нова регистрация</string>
+    <string name="current_automobiles">Текущи превозни средства</string>
+    <string name="details">Детайли</string>
+    <string name="hint_annual_service">Год. технически преглед валиден до</string>
+    <string name="hint_casko_date">Застраховка каско валидна до</string>
+    <string name="hint_insurance_date">Гражданска отговорност валидна до</string>
+    <string name="hint_km_next_service">Км на следващо обслужване</string>
+    <string name="hint_road_tax">Винетен стикер валиден до</string>
+    <string name="hint_service_date">Техническо обслужване валидно до</string>
+    <string name="hint_total_milage">Текущи километри (километраж)</string>
+    <string name="insurance"></string>
+    <string name="login_button_title">Вход</string>
+    <string name="my_vehicles">Моите превозни средства</string>
+    <string name="no_data">Няма данни</string>
+    <string name="overdue">Просрочени задължения</string>
+    <string name="password_et_confirm_hint">Потвърди паролата</string>
+    <string name="password_et_hint">Парола</string>
+    <string name="register">Регистрация</string>
+    <string name="register_button_title">Регистрация</string>
+    <string name="road_tax"></string>
+    <string name="title_activity_main"></string>
+    <string name="user_tv_hint">емейл</string>
+</resources>

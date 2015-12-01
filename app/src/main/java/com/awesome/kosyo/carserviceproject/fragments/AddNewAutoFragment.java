@@ -31,12 +31,12 @@ public class AddNewAutoFragment extends Fragment {
     private Button btnCancel;
     private EditText etRegistrationNum;
     private EditText etCurrentKm;
-    private TextView tvKmToNextService;
-    private TextView tvNextService;
-    private TextView tvInsurance;
-    private TextView tvMotorCasco;
-    private TextView tvCarService;
-    private TextView tvRoadTax;
+    private EditText tvKmToNextService;
+    private EditText tvNextService;
+    private EditText tvInsurance;
+    private EditText tvMotorCasco;
+    private EditText tvCarService;
+    private EditText tvRoadTax;
     private String mDay;
     private String mMonth;
     private String mYear;
@@ -95,11 +95,11 @@ public class AddNewAutoFragment extends Fragment {
         etRegistrationNum = (EditText) view.findViewById(R.id.etRegisrationNum);
         etCurrentKm = (EditText) view.findViewById(R.id.etCurrentKm);
         tvKmToNextService = (EditText) view.findViewById(R.id.etKmToNextService);
-        tvNextService = (TextView) view.findViewById(R.id.etNextService);
-        tvInsurance = (TextView) view.findViewById(R.id.etInsurance);
-        tvMotorCasco = (TextView) view.findViewById(R.id.etMotorCasco);
-        tvCarService = (TextView) view.findViewById(R.id.etCarService);
-        tvRoadTax = (TextView) view.findViewById(R.id.etRoadTax);
+        tvNextService = (EditText) view.findViewById(R.id.etNextService);
+        tvInsurance = (EditText) view.findViewById(R.id.etInsurance);
+        tvMotorCasco = (EditText) view.findViewById(R.id.etMotorCasco);
+        tvCarService = (EditText) view.findViewById(R.id.etCarService);
+        tvRoadTax = (EditText) view.findViewById(R.id.etRoadTax);
     }
 
     private void setOnClickListeners() {

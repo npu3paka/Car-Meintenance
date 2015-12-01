@@ -8,8 +8,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
         android:gravity="center"
-        android:text="Create a new registration" />
+        android:text="@string/create_new_registration"
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/etEmail"
@@ -18,8 +20,8 @@
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:gravity="center"
-        android:inputType="textEmailAddress"
-        android:hint="@string/user_tv_hint" />
+        android:hint="@string/user_tv_hint"
+        android:inputType="textEmailAddress" />
 
     <EditText
         android:id="@+id/etPassword"
@@ -30,6 +32,7 @@
         android:gravity="center"
         android:hint="@string/password_et_hint"
         android:inputType="textPassword" />
+
     <EditText
         android:id="@+id/password_et_second"
         android:layout_width="match_parent"
@@ -49,7 +52,7 @@
         android:layout_marginRight="25dp"
         android:layout_marginTop="25dp"
         android:background="#00c853"
-        android:text="Register"
+        android:text="@string/register"
         android:textColor="#ffffff" />
 
 </LinearLayout>
