@@ -1,4 +1,4 @@
-package com.example.kosyo.carserviceproject.adapters;
+package com.awesome.kosyo.carserviceproject.adapters;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.kosyo.carserviceproject.R;
-import com.example.kosyo.carserviceproject.models.VehicleAttribute;
+import com.awesome.kosyo.carserviceproject.R;
+import com.awesome.kosyo.carserviceproject.models.VehicleAttribute;
 
 import java.util.ArrayList;
 

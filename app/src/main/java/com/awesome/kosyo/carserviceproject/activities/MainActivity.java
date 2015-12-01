@@ -1,15 +1,15 @@
-package com.example.kosyo.carserviceproject.activities;
+package com.awesome.kosyo.carserviceproject.activities;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
-import com.example.kosyo.carserviceproject.R;
-import com.example.kosyo.carserviceproject.fragments.AddNewAutoFragment;
-import com.example.kosyo.carserviceproject.fragments.CurrentAutosFragment;
-import com.example.kosyo.carserviceproject.fragments.DetailAutoFragment;
-import com.example.kosyo.carserviceproject.fragments.MainFragment;
-import com.example.kosyo.carserviceproject.models.Vehicle;
+import com.awesome.kosyo.carserviceproject.R;
+import com.awesome.kosyo.carserviceproject.fragments.AddNewAutoFragment;
+import com.awesome.kosyo.carserviceproject.fragments.CurrentAutosFragment;
+import com.awesome.kosyo.carserviceproject.fragments.DetailAutoFragment;
+import com.awesome.kosyo.carserviceproject.fragments.MainFragment;
+import com.awesome.kosyo.carserviceproject.models.Vehicle;
 
 import java.util.ArrayList;
 import java.util.Arrays;

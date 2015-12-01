@@ -1,4 +1,4 @@
-package com.example.kosyo.carserviceproject;
+package com.awesome.kosyo.carserviceproject;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -1,4 +1,4 @@
-package com.example.kosyo.carserviceproject.fragments;
+package com.awesome.kosyo.carserviceproject.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.kosyo.carserviceproject.R;
+import com.awesome.kosyo.carserviceproject.R;
 
 /**
  * Created by kosyo on 19.11.15.

@@ -1,4 +1,4 @@
-package com.example.kosyo.carserviceproject.models;
+package com.awesome.kosyo.carserviceproject.models;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package com.example.kosyo.carserviceproject.models;
+package com.awesome.kosyo.carserviceproject.models;
 
 /**
  * Created by kosyo on 27.11.15.

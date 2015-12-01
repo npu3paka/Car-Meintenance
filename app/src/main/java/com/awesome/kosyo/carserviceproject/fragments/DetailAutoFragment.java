@@ -1,4 +1,4 @@
-package com.example.kosyo.carserviceproject.fragments;
+package com.awesome.kosyo.carserviceproject.fragments;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -11,10 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.example.kosyo.carserviceproject.R;
-import com.example.kosyo.carserviceproject.adapters.DetailArrayAdapter;
-import com.example.kosyo.carserviceproject.models.Vehicle;
-import com.example.kosyo.carserviceproject.models.VehicleAttribute;
+import com.awesome.kosyo.carserviceproject.R;
+import com.awesome.kosyo.carserviceproject.adapters.DetailArrayAdapter;
+import com.awesome.kosyo.carserviceproject.models.Vehicle;
+import com.awesome.kosyo.carserviceproject.models.VehicleAttribute;
 
 import java.util.Calendar;
 import java.util.List;

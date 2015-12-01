@@ -1,13 +1,13 @@
-package com.example.kosyo.carserviceproject.activities;
+package com.awesome.kosyo.carserviceproject.activities;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.kosyo.carserviceproject.R;
-import com.example.kosyo.carserviceproject.fragments.LoginFragment;
-import com.example.kosyo.carserviceproject.fragments.RegisterFragment;
+import com.awesome.kosyo.carserviceproject.R;
+import com.awesome.kosyo.carserviceproject.fragments.LoginFragment;
+import com.awesome.kosyo.carserviceproject.fragments.RegisterFragment;
 
 public class LoginActivity extends BaseActivity implements LoginFragment.LoginRegisterListener, RegisterFragment.OnBtnRegisterListener{
 

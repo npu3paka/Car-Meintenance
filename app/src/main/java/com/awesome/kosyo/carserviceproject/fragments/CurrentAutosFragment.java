@@ -1,4 +1,4 @@
-package com.example.kosyo.carserviceproject.fragments;
+package com.awesome.kosyo.carserviceproject.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -12,7 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.example.kosyo.carserviceproject.R;
+import com.awesome.kosyo.carserviceproject.R;
 
 import java.util.ArrayList;
 

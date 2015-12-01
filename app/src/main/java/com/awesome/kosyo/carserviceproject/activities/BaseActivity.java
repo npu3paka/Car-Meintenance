@@ -1,4 +1,4 @@
-package com.example.kosyo.carserviceproject.activities;
+package com.awesome.kosyo.carserviceproject.activities;
 
 import android.support.v7.app.AppCompatActivity;
 
