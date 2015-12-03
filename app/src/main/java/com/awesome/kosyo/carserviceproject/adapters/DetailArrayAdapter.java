@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.awesome.kosyo.carserviceproject.R;
+import com.awesome.kosyo.carserviceproject.activities.MainActivity;
 import com.awesome.kosyo.carserviceproject.models.VehicleAttribute;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class DetailArrayAdapter extends ArrayAdapter<VehicleAttribute> {
     private UpdatingListListener updatingListener;
 
     public DetailArrayAdapter(Activity context, ArrayList<VehicleAttribute> vehicleAtributeList) {
-        super(context, R.layout.detail_layout_item, vehicleAtributeList);
+        super(context, R.layout.list_item_detail, vehicleAtributeList);
         this.activity = context;
         this.mVehicleAtributeList = vehicleAtributeList;
     }
@@ -41,7 +42,7 @@ public class DetailArrayAdapter extends ArrayAdapter<VehicleAttribute> {
         //reuse views
         if (rowView == null) {
             LayoutInflater inflater = activity.getLayoutInflater();
-            rowView = inflater.inflate(R.layout.detail_layout_item, parent, false);
+            rowView = inflater.inflate(R.layout.list_item_detail, parent, false);
 
             // configure view holder
             holder = new ViewHolder();
@@ -56,7 +57,8 @@ public class DetailArrayAdapter extends ArrayAdapter<VehicleAttribute> {
         // fill data
         mVehicleAttributeObj = mVehicleAtributeList.get(position);
         holder.tvDetailAtribure.setText(mVehicleAttributeObj.getmName());
-        holder.tvDetailExparationDate.setText(mVehicleAttributeObj.getmValue());
+        String userFriendlyDate = MainActivity.toUserFriendlyFormatDate( mVehicleAttributeObj.getmValue());
+        holder.tvDetailExparationDate.setText(userFriendlyDate);
         holder.ivDetailEdit.setImageResource(R.mipmap.ic_editor_border_color);
 
         // If Edit Image was clicked open Date Picker

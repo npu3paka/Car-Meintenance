@@ -4,16 +4,26 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.awesome.kosyo.carserviceproject.R;
 import com.awesome.kosyo.carserviceproject.fragments.LoginFragment;
 import com.awesome.kosyo.carserviceproject.fragments.RegisterFragment;
-import com.awesome.kosyo.carserviceproject.interfaces.ApiKeys;
+import com.awesome.kosyo.carserviceproject.interfaces.ApiInterface;
+import com.awesome.kosyo.carserviceproject.models.ApplicationConfiguration;
 import com.awesome.kosyo.carserviceproject.models.Vehicle;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 
-public class LoginActivity extends BaseActivity implements LoginFragment.LoginRegisterListener, RegisterFragment.OnBtnRegisterListener, ApiKeys {
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
+public class LoginActivity extends BaseActivity implements LoginFragment.LoginRegisterListener, RegisterFragment.OnBtnRegisterListener {
+    public final static String TAG = LoginActivity.class.getSimpleName();
     private ArrayList<Vehicle> ownedUserVehicles;
 
 
@@ -31,29 +41,30 @@ public class LoginActivity extends BaseActivity implements LoginFragment.LoginRe
     @Override
     public void onLoginPrompted(String username, String password) {
         ownedUserVehicles = new ArrayList<>();
+        Log.v(TAG, "in onLoginPrompted= ");
 
-        /*String url = "http://blablabla";
-        RestAdapter adapter = new RestAdapter.Builder().setEndpoint(url).build();
+        RestAdapter adapter = new RestAdapter.Builder().
+                setEndpoint(ApplicationConfiguration.BASE_URL).build();
         ApiInterface restInterface = adapter.create(ApiInterface.class);
 
-        restInterface.setStoreAlarm(username, token, true, new Callback<JsonObject>() {
+        restInterface.getUserVehicles(username, password, new Callback<JsonObject>() {
             @Override
             public void success(JsonObject jsonObject, Response response) {
-                JsonArray jsonArray = new JsonArray();
-                jsonArray = jsonObject.getAsJsonArray(DATA_ARRAY_KEY);
+                JsonArray jsonArray = jsonObject.getAsJsonArray(ApplicationConfiguration.DATA_ARRAY_KEY);
 
+                Log.v(TAG, "in Success JsonObject:  = " + jsonObject.getAsString());
                 for (int i = 0; i < jsonArray.size(); i++) {
                     JsonObject jObj = jsonArray.get(i).getAsJsonObject();
 
                     // Get the values from the JsonObject
-                    String registrationNum = jObj.get(REGISTRATION_NUM_KEY).getAsString();
-                    int currentKm = jObj.get(CURRENT_KM_KEY).getAsInt();
-                    int kmToNextService = jObj.get(KM_TO_NEXT_SERVICE_KEY).getAsInt();
-                    String nextServiceDate = jObj.get(NEXT_SERVICE_KEY).getAsString();
-                    String nextInsuranceDate = jObj.get(NEXT_INSURANCE_KEY).getAsString();
-                    String nextMotorCascoDate = jObj.get(NEXT_MOTOR_CASCO_KEY).getAsString();
-                    String nextAnnualTechnicalInspectionDate = jObj.get(NEXT_ANNUAL_TECHNICAL_INSPECTION_KEY).getAsString();
-                    String nextRoadTaxDate = jObj.get(NEXT_ROAD_TAX_KEY).getAsString();
+                    String registrationNum = jObj.get(ApplicationConfiguration.REGISTRATION_NUM_KEY).getAsString();
+                    int currentKm = jObj.get(ApplicationConfiguration.CURRENT_KM_KEY).getAsInt();
+                    int kmToNextService = jObj.get(ApplicationConfiguration.KM_TO_NEXT_SERVICE_KEY).getAsInt();
+                    String nextServiceDate = jObj.get(ApplicationConfiguration.NEXT_SERVICE_KEY).getAsString();
+                    String nextInsuranceDate = jObj.get(ApplicationConfiguration.NEXT_INSURANCE_KEY).getAsString();
+                    String nextMotorCascoDate = jObj.get(ApplicationConfiguration.NEXT_MOTOR_CASCO_KEY).getAsString();
+                    String nextAnnualTechnicalInspectionDate = jObj.get(ApplicationConfiguration.NEXT_ANNUAL_TECHNICAL_INSPECTION_KEY).getAsString();
+                    String nextRoadTaxDate = jObj.get(ApplicationConfiguration.NEXT_ROAD_TAX_KEY).getAsString();
 
                     // Create a new vehicle obj and add it to the arrayList of type Vehicle
                     Vehicle vehicle = new Vehicle(registrationNum, currentKm, kmToNextService, nextServiceDate,
@@ -64,9 +75,10 @@ public class LoginActivity extends BaseActivity implements LoginFragment.LoginRe
 
             @Override
             public void failure(RetrofitError error) {
-
+                Log.v(TAG, "In failure. RetrofitError :" + error);
             }
-        });*/
+        });
+
 
 //        RestClient.GitApiInterface service = RestClient.getClient();
 //        service.createUser(email, password, new Callback<JSONObject>() {
@@ -151,7 +163,7 @@ public class LoginActivity extends BaseActivity implements LoginFragment.LoginRe
     }
 
     @Override
-    public void onCreateRegisterationClicked() {
+    public void onCreateRegistrationClicked() {
         RegisterFragment registerFragment = new RegisterFragment();
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction
@@ -161,7 +173,33 @@ public class LoginActivity extends BaseActivity implements LoginFragment.LoginRe
     }
 
     @Override
-    public void onBtnRegisterClicked() {
-        // TODO: add the new user registration to database
+    public void onBtnRegisterClicked(String email, String password, String password_confirmation) {
+        // TODO: finish implementation
+
+        RestAdapter adapter = new RestAdapter.Builder().
+                setEndpoint(ApplicationConfiguration.BASE_URL).build();
+        ApiInterface restInterface = adapter.create(ApiInterface.class);
+        restInterface.addUser(email, password, password_confirmation, new Callback<JsonObject>() {
+            @Override
+            public void success(JsonObject jsonObject, Response response) {
+                Log.v(TAG, "Response status is:" + response.getStatus());
+                //               if (response.getStatus() == 201) {
+//                    Toast  toast = Toast.makeText(this, "Регистрирахте се успешно! Сега може да влезете в акаунта си.", Toast.LENGTH_LONG);
+//                    toast.show();
+//               }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.v(TAG, "In onBtnRegisterClicked - failure error:" + error);
+            }
+        });
+
+        // Load login Fragment
+        LoginFragment loginFragment = LoginFragment.getInstance();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.addToBackStack(null)
+                .replace(R.id.login_framelayout, loginFragment, LoginFragment.TAG);
+
     }
 }

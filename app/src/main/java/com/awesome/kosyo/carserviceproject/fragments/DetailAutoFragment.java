@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.awesome.kosyo.carserviceproject.R;
+import com.awesome.kosyo.carserviceproject.activities.MainActivity;
 import com.awesome.kosyo.carserviceproject.adapters.DetailArrayAdapter;
 import com.awesome.kosyo.carserviceproject.models.Vehicle;
 import com.awesome.kosyo.carserviceproject.models.VehicleAttribute;
@@ -100,22 +101,25 @@ public class DetailAutoFragment extends Fragment implements DetailArrayAdapter.U
                 String mDay = getZeroPaddedNum(dayOfMonth);
                 String mMonth = getZeroPaddedNum(monthOfYear + 1);
                 String mYear = Integer.toString(year);
-                String newDateString = mDay + "-" + mMonth + "-" + mYear;
-                listener.dataUpdated(newDateString);
+                String newUserFriendlyFormatDate = mDay + "-" + mMonth + "-" + mYear;
+                listener.dataUpdated(newUserFriendlyFormatDate);
 
                 List<VehicleAttribute> vehicleAttributeList = vehicleObj.getVehicleAttributesList();
 
+
+                Log.i(TAG, "newUserFriendlyFormatDate :" + newUserFriendlyFormatDate);
                 // Logs
-                String val;
-                for(int i=0; i< vehicleAttributeList.size(); i++){
-                    val =  vehicleAttributeList.get(i).getmValue();
-                    Log.v(TAG, "Val: "+ i + " :" + val);
-                }
-                String oldDate = vehicleAttributeList.get(position).getmValue();
-                Log.i(TAG, "OLD DATA :" + oldDate);
+//                String val;
+//                for(int i=0; i< vehicleAttributeList.size(); i++){
+//                    val =  vehicleAttributeList.get(i).getmValue();
+//                    Log.v(TAG, "Val: "+ i + " :" + val);
+//                }
 
 
-                vehicleAttributeList.get(position).setmValue(newDateString);
+                String newApiFormatDate = MainActivity.toApiFormatDate(newUserFriendlyFormatDate);
+
+                Log.v(TAG, "newApiFormatDate :" + newApiFormatDate);
+                vehicleAttributeList.get(position).setmValue(newApiFormatDate);
                 //TODO Update on server
                 //then update the list
                 vehicleObj.updateVehicleByAttributes(vehicleAttributeList);

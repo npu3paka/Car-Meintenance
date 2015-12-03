@@ -27,7 +27,7 @@ public class MainFragment extends Fragment {
     private LinearLayout mAddNewAutoLayout;
     private ListView mOverdueListView;
     // All current ownedCarsDetails the user have. Use as database
-    private ArrayList<String> regNumOwnedCarsList;
+    private ArrayList<String> regNumOverdueList;
 
     // Singleton implementation
     private static MainFragment instance;
@@ -67,9 +67,10 @@ public class MainFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ListView overdueItemsListView = (ListView) view.findViewById(R.id.overdue_items_listview);
         ArrayAdapter<String> overduePartsArrayAdapter = new ArrayAdapter<String>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                this.regNumOwnedCarsList
+                getActivity(), //  context
+                R.layout.list_item_overdue, // The name of the layout ID
+                R.id.tvOverdueRegNum,       // The name of the textview ID
+                this.regNumOverdueList    // the list of data to show
         );
         overdueItemsListView.setAdapter(overduePartsArrayAdapter);
         return view;
@@ -110,8 +111,8 @@ public class MainFragment extends Fragment {
         });
     }
 
-    public void setRegNumOwnedCarsList(ArrayList<String> regNumOwnedCarsList) {
-        this.regNumOwnedCarsList = regNumOwnedCarsList;
+    public void setRegNumOverdueList(ArrayList<String> regNumOverdueList) {
+        this.regNumOverdueList = regNumOverdueList;
     }
 
     public interface OnNewFragmentListener {

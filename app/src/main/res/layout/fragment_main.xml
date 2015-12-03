@@ -3,13 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-   >
+    android:padding="16dp">
 
     <LinearLayout
         android:id="@+id/add_automobile_layout"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="45dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -32,7 +31,7 @@
     <LinearLayout
         android:id="@+id/current_autos_layout"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="45dp"
         android:layout_below="@id/add_automobile_layout"
         android:gravity="center"
         android:orientation="horizontal">
@@ -54,11 +53,20 @@
 
     </LinearLayout>
 
+    <View
+        android:id="@+id/v_black"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/current_autos_layout"
+        android:background="#000000"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp" />
+
     <TextView
         android:id="@+id/overdue_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/current_autos_layout"
+        android:layout_below="@id/v_black"
         android:text="@string/overdue"
         android:textSize="20sp" />
 

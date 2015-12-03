@@ -99,13 +99,13 @@ public class LoginFragment extends Fragment {
                 boolean isInputValid = isValuesValid(mEmail, mPassword);
 
                 // TODO: Uncomment validation check before uploading to stable release
-              //  if (isInputValid) {
-                    // Save email in SharedPreferences
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString(getString(R.string.user_email), mEmail);
-                    editor.commit();
-                    mListener.onLoginPrompted(mEmail, mPassword);
-             //   }
+                //  if (isInputValid) {
+                // Save email in SharedPreferences
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(getString(R.string.user_email), mEmail);
+                editor.commit();
+                mListener.onLoginPrompted(mEmail, mPassword);
+                //   }
             }
         });
 
@@ -113,7 +113,7 @@ public class LoginFragment extends Fragment {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onCreateRegisterationClicked();
+                mListener.onCreateRegistrationClicked();
             }
         });
     }
@@ -154,6 +154,6 @@ public class LoginFragment extends Fragment {
     public interface LoginRegisterListener {
         void onLoginPrompted(String email, String password);
 
-        void onCreateRegisterationClicked();
+        void onCreateRegistrationClicked();
     }
 }

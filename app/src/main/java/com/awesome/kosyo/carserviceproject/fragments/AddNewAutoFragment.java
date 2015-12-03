@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.awesome.kosyo.carserviceproject.R;
+import com.awesome.kosyo.carserviceproject.activities.MainActivity;
 import com.awesome.kosyo.carserviceproject.models.Vehicle;
 
 import java.util.Calendar;
@@ -146,9 +147,16 @@ public class AddNewAutoFragment extends Fragment {
                 boolean isInputValid = isInputValid();
                 // TODO: Uncomment before putting in production
                 // if (isInputValid) {
-                mVehicle = new Vehicle(mRegistrationNum, mCurrentKm, mKmToNextService,
-                        mInsurance, mNextService, mMotorCasco, mNextYearlyTechnicalServiceDate, mRoadTax);
-
+                mVehicle = new Vehicle(
+                        mRegistrationNum,
+                        mCurrentKm,
+                        mKmToNextService,
+                        MainActivity.toApiFormatDate(mInsurance),
+                        MainActivity.toApiFormatDate(mNextService),
+                        MainActivity.toApiFormatDate(mMotorCasco),
+                        MainActivity.toApiFormatDate(mNextYearlyTechnicalServiceDate),
+                        MainActivity.toApiFormatDate(mRoadTax)
+                );
                 mListener.onAddVehicleClicked(mVehicle);
                 // }
             }
@@ -288,7 +296,9 @@ public class AddNewAutoFragment extends Fragment {
                 mDay = getZeroPaddedNum(dayOfMonth);
                 mMonth = getZeroPaddedNum(monthOfYear + 1);
                 mYear = Integer.toString(year);
-                textView.setText(mDay + "-" + mMonth + "-" + mYear);
+                ;
+                String date = mDay + "-" + mMonth + "-" + mYear;
+                textView.setText(date);
             }
         };
 

@@ -20,7 +20,7 @@ import com.awesome.kosyo.carserviceproject.R;
  */
 public class RegisterFragment extends Fragment {
     public final static String TAG = RegisterFragment.class.getSimpleName();
-    EditText mUsername;
+    EditText mEmail;
     EditText mPassword;
     EditText mPasswordConfirm;
     Button mBtnRegister;
@@ -65,7 +65,7 @@ public class RegisterFragment extends Fragment {
     }
 
     private void initializeLayoutElements(View view) {
-        mUsername = (EditText) view.findViewById(R.id.etEmail);
+        mEmail = (EditText) view.findViewById(R.id.etEmail);
         mPassword = (EditText) view.findViewById(R.id.etPassword);
         mPasswordConfirm = (EditText) view.findViewById(R.id.password_et_second);
         mBtnRegister = (Button) view.findViewById(R.id.btnRegister);
@@ -76,15 +76,16 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Get values from EditTexts
-                final String username = mUsername.getText().toString();
+                final String email = mEmail.getText().toString();
                 final String password = mPassword.getText().toString();
                 final String passwordConfirm = mPasswordConfirm.getText().toString();
 
-                boolean isValid = isValuesValid(username, password, passwordConfirm);
+                boolean isValid = isValuesValid(email, password, passwordConfirm);
 
-                if (isValid) {
-                    mListener.onBtnRegisterClicked();
-                }
+                // TODO: Uncomment before putting in production
+                //if (isValid) {
+                    mListener.onBtnRegisterClicked(email, password, passwordConfirm);
+                //}
             }
         });
     }
@@ -125,6 +126,6 @@ public class RegisterFragment extends Fragment {
     }
 
     public interface OnBtnRegisterListener {
-        void onBtnRegisterClicked();
+        void onBtnRegisterClicked(String email, String password, String password_confirmation);
     }
 }
