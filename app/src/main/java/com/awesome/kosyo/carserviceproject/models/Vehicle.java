@@ -11,33 +11,29 @@ import java.util.List;
  * the user add
  */
 public class Vehicle {
-    private static ArrayList<String> vehicleAttributesNames; // = new ArrayList<>();
-//    = Arrays.asList(
-//            CarServiceApplication.getAppContext().getString(R.string.service_validity),
-//            CarServiceApplication.getAppContext().getString(R.string.insurance),
-//            CarServiceApplication.getAppContext().getString(R.string.casco),
-//            CarServiceApplication.getAppContext().getString(R.string.vehicle_service),
-//            CarServiceApplication.getAppContext().getString(R.string.road_tax));
-
+    private static ArrayList<String> vehicleAttributesNames;
+    private int mId;
     private String mRegistrationNum;
     private int mCurrentKm;
     private int mKmToNextService;
-    private String mNextServiceDate;
+    private String mNextOilServiceDate;
     private String mNextInsuranceDate;
     private String mNextMotorCascoDate;
-    private String mNextYearlyTechnicalServiceDate; // yearly technical service
+    private String mNextAnnualTechnicalServiceDate; // yearly technical service
     private String mNextRoadTaxDate;
 
-    public Vehicle(String mRegistrationNum, int mCurrentKm, int mKmToNextService, String mNextServiceDate,
-                   String mNextInsuranceDate, String mNextMotorCascoDate,
-                   String mNextCarServiceDate, String mNextRoadTaxDate) {
+
+    public Vehicle(String mRegistrationNum, int mCurrentKm, int mKmToNextService,
+                   String mNextServiceDate, String mNextInsuranceDate,
+                   String mNextMotorCascoDate, String mNextCarServiceDate,
+                   String mNextRoadTaxDate) {
         this.mRegistrationNum = mRegistrationNum;
         this.mCurrentKm = mCurrentKm;
         this.mKmToNextService = mKmToNextService;
-        this.mNextServiceDate = mNextServiceDate;
+        this.mNextOilServiceDate = mNextServiceDate;
         this.mNextInsuranceDate = mNextInsuranceDate;
         this.mNextMotorCascoDate = mNextMotorCascoDate;
-        this.mNextYearlyTechnicalServiceDate = mNextCarServiceDate;
+        this.mNextAnnualTechnicalServiceDate = mNextCarServiceDate;
         this.mNextRoadTaxDate = mNextRoadTaxDate;
 
         vehicleAttributesNames = new ArrayList<>();
@@ -48,12 +44,42 @@ public class Vehicle {
         vehicleAttributesNames.add("Next Road Tax: ");
     }
 
-    public String getmNextYearlyTechnicalServiceDate() {
-        return mNextYearlyTechnicalServiceDate;
+    public Vehicle(int mId, String mRegistrationNum, int mCurrentKm, int mKmToNextService,
+                   String mNextServiceDate, String mNextInsuranceDate,
+                   String mNextMotorCascoDate, String mNextCarServiceDate,
+                   String mNextRoadTaxDate) {
+        this.mId = mId;
+        this.mRegistrationNum = mRegistrationNum;
+        this.mCurrentKm = mCurrentKm;
+        this.mKmToNextService = mKmToNextService;
+        this.mNextOilServiceDate = mNextServiceDate;
+        this.mNextInsuranceDate = mNextInsuranceDate;
+        this.mNextMotorCascoDate = mNextMotorCascoDate;
+        this.mNextAnnualTechnicalServiceDate = mNextCarServiceDate;
+        this.mNextRoadTaxDate = mNextRoadTaxDate;
+
+        vehicleAttributesNames = new ArrayList<>();
+        vehicleAttributesNames.add("Service valid to: ");
+        vehicleAttributesNames.add("Insurance valid to: ");
+        vehicleAttributesNames.add("Motor casco valid to: ");
+        vehicleAttributesNames.add("Next Technical Service: ");
+        vehicleAttributesNames.add("Next Road Tax: ");
     }
 
-    public void setmNextYearlyTechnicalServiceDate(String mNextYearlyTechnicalServiceDate) {
-        this.mNextYearlyTechnicalServiceDate = mNextYearlyTechnicalServiceDate;
+    public int getmId() {
+        return mId;
+    }
+
+    public void setmId(int mId) {
+        this.mId = mId;
+    }
+
+    public String getmNextAnnualTechnicalServiceDate() {
+        return mNextAnnualTechnicalServiceDate;
+    }
+
+    public void setmNextAnnualTechnicalServiceDate(String mNextAnnualTechnicalServiceDate) {
+        this.mNextAnnualTechnicalServiceDate = mNextAnnualTechnicalServiceDate;
     }
 
     public String getmNextRoadTaxDate() {
@@ -80,12 +106,12 @@ public class Vehicle {
         this.mKmToNextService = mKmToNextService;
     }
 
-    public String getmNextServiceDate() {
-        return mNextServiceDate;
+    public String getmNextOilServiceDate() {
+        return mNextOilServiceDate;
     }
 
-    public void setmNextServiceDate(String mNextServiceDate) {
-        this.mNextServiceDate = mNextServiceDate;
+    public void setmNextOilServiceDate(String mNextOilServiceDate) {
+        this.mNextOilServiceDate = mNextOilServiceDate;
     }
 
     public String getmNextInsuranceDate() {
@@ -119,10 +145,10 @@ public class Vehicle {
 
     public ArrayList<VehicleAttribute> getVehicleAttributesList() {
         ArrayList<String> vehicleAttributesValues = new ArrayList<String>(Arrays.asList(
-                mNextServiceDate,
+                mNextOilServiceDate,
                 mNextInsuranceDate,
                 mNextMotorCascoDate,
-                mNextYearlyTechnicalServiceDate,
+                mNextAnnualTechnicalServiceDate,
                 mNextRoadTaxDate));
 
 
@@ -140,10 +166,10 @@ public class Vehicle {
     }
 
     public void updateVehicleByAttributes(List<VehicleAttribute> vehicleAttributeList) {
-        mNextServiceDate = vehicleAttributeList.get(0).getmValue();
+        mNextOilServiceDate = vehicleAttributeList.get(0).getmValue();
         mNextInsuranceDate = vehicleAttributeList.get(1).getmValue();
         mNextMotorCascoDate = vehicleAttributeList.get(2).getmValue();
-        mNextYearlyTechnicalServiceDate = vehicleAttributeList.get(3).getmValue();
+        mNextAnnualTechnicalServiceDate = vehicleAttributeList.get(3).getmValue();
         mNextRoadTaxDate = vehicleAttributeList.get(4).getmValue();
     }
 }

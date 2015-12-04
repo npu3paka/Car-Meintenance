@@ -3,17 +3,31 @@ package com.awesome.kosyo.carserviceproject.activities;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.awesome.kosyo.carserviceproject.R;
 import com.awesome.kosyo.carserviceproject.fragments.AddNewAutoFragment;
 import com.awesome.kosyo.carserviceproject.fragments.CurrentAutosFragment;
 import com.awesome.kosyo.carserviceproject.fragments.DetailAutoFragment;
 import com.awesome.kosyo.carserviceproject.fragments.MainFragment;
+import com.awesome.kosyo.carserviceproject.helpers.ApplicationConfiguration;
+import com.awesome.kosyo.carserviceproject.helpers.SessionManager;
+import com.awesome.kosyo.carserviceproject.interfaces.ApiInterface;
 import com.awesome.kosyo.carserviceproject.models.Vehicle;
+import com.awesome.kosyo.carserviceproject.models.VehicleAttribute;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by kosyo on 17.11.15.
@@ -21,12 +35,11 @@ import java.util.Calendar;
 public class MainActivity extends BaseActivity implements MainFragment.OnNewFragmentListener,
         CurrentAutosFragment.OnCarSelectedListener, AddNewAutoFragment.OnCreateVehicleClicked,
         DetailAutoFragment.DataInteractionListener {
-
+    public static final String TAG = MainActivity.class.getSimpleName();
     private ArrayList<Vehicle> ownedUserVehicles;
+    private Vehicle vehicle;
     // Dummy data - list of all reg numbers of owned ownedUserVehicles
     private ArrayList<String> regNumOverdueList;
-    // Hardcoded values of the vehicle attributes
-    public static ArrayList<String> vehicleAttributesNames;
     private int vehiclePositionInList;
 
 
@@ -37,30 +50,73 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
         getSupportActionBar().setTitle("Fleet care pro");
 
         ownedUserVehicles = new ArrayList<Vehicle>();
+
+        // Get the User Vehicles from API
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(ApplicationConfiguration.BASE_URL)
+                .build();
+        ApiInterface restInterface = restAdapter.create(ApiInterface.class);
+        restInterface.getVehicles(ApplicationConfiguration.VERSION_VALUE,
+                ApplicationConfiguration.ACCEPT_VALUE,
+                SessionManager.getInstance().getLOGIN_TOKEN(), new Callback<JsonObject>() {
+                    @Override
+                    public void success(JsonObject jsonObject, Response response) {
+                        JsonArray jsonArray = jsonObject.getAsJsonArray(
+                                ApplicationConfiguration.DATA_ARRAY_KEY);
+                        for (int i = 0; i < jsonArray.size(); i++) {
+                            JsonObject jObj = jsonArray.get(i).getAsJsonObject();
+
+                            // Get the values from the JsonObject
+                            int id = jObj.get(ApplicationConfiguration.ID_KEY).getAsInt();
+                            String registrationNum = jObj.get(ApplicationConfiguration.REGISTRATION_NUM_KEY).getAsString();
+                            int currentKm = jObj.get(ApplicationConfiguration.CURRENT_KM_KEY).getAsInt();
+                            int kmToNextService = jObj.get(ApplicationConfiguration.KM_TO_NEXT_SERVICE_KEY).getAsInt();
+                            String nextServiceDate = jObj.get(ApplicationConfiguration.NEXT_SERVICE_KEY).getAsString();
+                            String nextInsuranceDate = jObj.get(ApplicationConfiguration.NEXT_INSURANCE_KEY).getAsString();
+                            String nextMotorCascoDate = jObj.get(ApplicationConfiguration.NEXT_MOTOR_CASCO_KEY).getAsString();
+                            String nextAnnualTechnicalInspectionDate = jObj.get(ApplicationConfiguration.NEXT_ANNUAL_TECHNICAL_INSPECTION_KEY).getAsString();
+                            String nextRoadTaxDate = jObj.get(ApplicationConfiguration.NEXT_ROAD_TAX_KEY).getAsString();
+
+                            // Create a new vehicle obj and add it to the arrayList of type Vehicle
+                            Vehicle vehicle = new Vehicle(id, registrationNum, currentKm, kmToNextService, nextServiceDate,
+                                    nextInsuranceDate, nextMotorCascoDate, nextAnnualTechnicalInspectionDate, nextRoadTaxDate);
+                            ownedUserVehicles.add(vehicle);
+                        }
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                    }
+                });
+
+
         // set values of car
-        Vehicle vehicle1 = new Vehicle("C9999CC", 120000, 124000, "2016-12-8", "2016-8-1", "2016-7-2", "2016-7-3", "2016-12-4");
-        Vehicle vehicle2 = new Vehicle("B7777BB", 840000, 96000, "2018-03-1", "2018-12-2", "2018-1-3", "2018-1-4", "2018-1-5");
+        Vehicle vehicle1 = new Vehicle(100, "C9999CC", 120000, 124000, "2016-12-8", "2016-8-1", "2016-7-2", "2016-7-3", "2016-12-4");
+        Vehicle vehicle2 = new Vehicle(101, "B7777BB", 840000, 96000, "2018-03-1", "2018-12-2", "2018-1-3", "2018-1-4", "2018-1-5");
         ownedUserVehicles.add(vehicle1);
         ownedUserVehicles.add(vehicle2);
 
-        // set values of the
-//        vehicleAttributesNames = new ArrayList<String>();
-//        vehicleAttributesNames.add("Service valid to: ");
-//        vehicleAttributesNames.add("Insurance valid to: ");
-//        vehicleAttributesNames.add("Motor casco valid to: ");
-//        vehicleAttributesNames.add("Next Vehicle Service: ");
-//        vehicleAttributesNames.add("Next Road Tax: ");
 
         // set values of regNumOverdueList
         regNumOverdueList = new ArrayList<>(Arrays.asList("A 0001 AA", "A 0002 AA"));
 
+
         String dueDate;
-        for (int i=0; i<ownedUserVehicles.size(); i++){
+        for (int i = 0; i < ownedUserVehicles.size(); i++) {
             // Get every Vehicle object
             Vehicle vehicle = ownedUserVehicles.get(i);
 
-            dueDate = vehicle.getmNextServiceDate();
-            boolean isServiceDateOverdue = isVehicleAttributeOverdue(dueDate);
+            dueDate = vehicle.getmNextOilServiceDate();
+            boolean isOilServiceDateOverdue = isVehicleAttributeOverdue(dueDate);
+            dueDate = vehicle.getmNextInsuranceDate();
+            boolean isInsuranceOverdue = isVehicleAttributeOverdue(dueDate);
+            dueDate = vehicle.getmNextMotorCascoDate();
+            boolean isCascoOverdue = isVehicleAttributeOverdue(dueDate);
+            dueDate = vehicle.getmNextAnnualTechnicalServiceDate();
+            boolean isAnnualServiceOverdue = isVehicleAttributeOverdue(dueDate);
+            dueDate = vehicle.getmNextRoadTaxDate();
+            boolean isRoadTaxOverdue = isVehicleAttributeOverdue(dueDate);
 
             // TODO: Make this check for the other attributes and remeber the ones that are overdue
         }
@@ -80,26 +136,26 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
     }
 
 
-    private boolean isVehicleAttributeOverdue(String dueDate){
+    private boolean isVehicleAttributeOverdue(String dueDate) {
         int dueDay;
         int dueMonth;
         int dueYear;
 
         // Get the current day
         Boolean lenient = true;
-        Calendar currentDateCalendar =  Calendar.getInstance();
+        Calendar currentDateCalendar = Calendar.getInstance();
         currentDateCalendar.setLenient(lenient);
 
-        // Parse date string to day, month and year
+        // Parse date string to year, month and day
         // Example 16-11-2015 to 16, 11, 2015
         String tokens[] = dueDate.split("-");
-        dueYear = Integer.parseInt(tokens[2]);
+        dueYear = Integer.parseInt(tokens[1]);
         // if Due year is greater then the current there is no need to check month or day
-        if(dueYear <= currentDateCalendar.YEAR){
+        if (dueYear <= currentDateCalendar.YEAR) {
             dueMonth = Integer.parseInt(tokens[1]);
-            if (dueMonth <= currentDateCalendar.MONTH){
-                dueDay = Integer.parseInt(tokens[0]);
-                if (dueDay <= currentDateCalendar.DAY_OF_MONTH){
+            if (dueMonth <= currentDateCalendar.MONTH) {
+                dueDay = Integer.parseInt(tokens[2]);
+                if (dueDay <= currentDateCalendar.DAY_OF_MONTH) {
                     // The Vehicle attribute is overdue
                     return true;
                 }
@@ -162,21 +218,41 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
     }
 
     @Override
-    public void onAddVehicleClicked(Vehicle vehicle) {
-        // TODO add to server
-//        RestAdapter adapter = new RestAdapter.Builder()
-//                .setEndpoint(ApplicationConfiguration.BASE_URL).build();
-//        ApiInterface restInterface = adapter.create(ApiInterface.class);
-//
-//        restInterface.addVehicle();
+    public void onAddVehicleClicked(final Vehicle vehicle) {
+        RestAdapter adapter = new RestAdapter.Builder()
+                .setEndpoint(ApplicationConfiguration.BASE_URL).build();
+        ApiInterface restInterface = adapter.create(ApiInterface.class);
 
-        // Add new user vehicle to database
-        ownedUserVehicles.add(vehicle);
-        regNumOverdueList.add(vehicle.getmRegistrationNum());
+        String regNum = vehicle.getmRegistrationNum();
+        int currKm = vehicle.getmCurrentKm();
+        int kmNextService = vehicle.getmKmToNextService();
+        String oilService = vehicle.getmNextOilServiceDate();
+        String insurance = vehicle.getmNextInsuranceDate();
+        String casco = vehicle.getmNextMotorCascoDate();
+        String anualService = vehicle.getmNextAnnualTechnicalServiceDate();
+        String roadTax = vehicle.getmNextRoadTaxDate();
 
-        // Open Main Fragment again
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.popBackStack();
+        restInterface.addVehicle(ApplicationConfiguration.VERSION_VALUE,
+                ApplicationConfiguration.ACCEPT_VALUE, ApplicationConfiguration.TOKEN,
+                regNum, currKm, kmNextService, oilService, insurance,
+                casco, anualService, roadTax, new Callback<JsonArray>() {
+                    @Override
+                    public void success(JsonArray jsonElements, Response response) {
+
+                        // Add new user vehicle to local temporary storage for the life of this Activity
+                        ownedUserVehicles.add(vehicle);
+                        regNumOverdueList.add(vehicle.getmRegistrationNum());
+
+                        // Open Main Fragment again
+                        FragmentManager fragmentManager = getFragmentManager();
+                        fragmentManager.popBackStack();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.v(TAG, "In failure: " + error.toString());
+                    }
+                });
     }
 
     @Override
@@ -187,10 +263,44 @@ public class MainActivity extends BaseActivity implements MainFragment.OnNewFrag
     }
 
     @Override
-    public void saveData(Vehicle vehicle) {
-        ownedUserVehicles.set(vehiclePositionInList, vehicle);
-    }
+    public void saveUpdatedVehicle(int position, String newApiFormatDate) {
+        // Update the attribute in the Vehicle object
+        List<VehicleAttribute> vehicleAttributeList = vehicle.getVehicleAttributesList();
+        vehicleAttributeList.get(position).setmValue(newApiFormatDate);
+        vehicle.updateVehicleByAttributes(vehicleAttributeList);
 
+        // Get the new values from the Vehicle object
+        String regNum = vehicle.getmRegistrationNum();
+        int currKm = vehicle.getmCurrentKm();
+        int kmNextService = vehicle.getmKmToNextService();
+        String oilService = vehicle.getmNextOilServiceDate();
+        String insurance = vehicle.getmNextInsuranceDate();
+        String casco = vehicle.getmNextMotorCascoDate();
+        String anualService = vehicle.getmNextAnnualTechnicalServiceDate();
+        String roadTax = vehicle.getmNextRoadTaxDate();
+
+        // Update on server
+        RestAdapter adapter = new RestAdapter.Builder()
+                .setEndpoint(ApplicationConfiguration.BASE_URL)
+                .build();
+        ApiInterface restInterface = adapter.create(ApiInterface.class);
+        restInterface.updateVehicle(ApplicationConfiguration.VERSION_VALUE, ApplicationConfiguration.ACCEPT_VALUE,
+                SessionManager.getInstance().getLOGIN_TOKEN(), regNum, currKm, kmNextService, oilService,
+                insurance, casco, anualService, roadTax, new Callback<JsonObject>() {
+                    @Override
+                    public void success(JsonObject jsonObject, Response response) {
+                        // Update locally
+                        ownedUserVehicles.set(vehiclePositionInList, vehicle);
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Toast toast = Toast.makeText(getApplicationContext(), "Възникна грешка! Моля, опитайте отново.", Toast.LENGTH_SHORT);
+                        toast.show();
+                        Log.v(TAG, "In failure: " + error.toString());
+                    }
+                });
+    }
 
     // Converts DAY-MONTH-YEAR to YEAR-MONTH-DAY
     public static final String toApiFormatDate(String date) {

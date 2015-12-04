@@ -145,8 +145,7 @@ public class AddNewAutoFragment extends Fragment {
                 //Create new vehicle object and pass it to the activity
 
                 boolean isInputValid = isInputValid();
-                // TODO: Uncomment before putting in production
-                // if (isInputValid) {
+                if (isInputValid) {
                 mVehicle = new Vehicle(
                         mRegistrationNum,
                         mCurrentKm,
@@ -158,7 +157,7 @@ public class AddNewAutoFragment extends Fragment {
                         MainActivity.toApiFormatDate(mRoadTax)
                 );
                 mListener.onAddVehicleClicked(mVehicle);
-                // }
+                }
             }
         });
 

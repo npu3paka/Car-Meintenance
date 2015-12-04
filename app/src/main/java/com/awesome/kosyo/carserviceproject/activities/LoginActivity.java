@@ -2,30 +2,31 @@ package com.awesome.kosyo.carserviceproject.activities;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.awesome.kosyo.carserviceproject.R;
 import com.awesome.kosyo.carserviceproject.fragments.LoginFragment;
 import com.awesome.kosyo.carserviceproject.fragments.RegisterFragment;
+import com.awesome.kosyo.carserviceproject.helpers.ApplicationConfiguration;
+import com.awesome.kosyo.carserviceproject.helpers.SessionManager;
 import com.awesome.kosyo.carserviceproject.interfaces.ApiInterface;
-import com.awesome.kosyo.carserviceproject.models.ApplicationConfiguration;
-import com.awesome.kosyo.carserviceproject.models.Vehicle;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
-import java.util.ArrayList;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class LoginActivity extends BaseActivity implements LoginFragment.LoginRegisterListener, RegisterFragment.OnBtnRegisterListener {
+public class LoginActivity extends BaseActivity implements LoginFragment.LoginRegisterListener,
+        RegisterFragment.OnBtnRegisterListener {
     public final static String TAG = LoginActivity.class.getSimpleName();
-    private ArrayList<Vehicle> ownedUserVehicles;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,127 +40,37 @@ public class LoginActivity extends BaseActivity implements LoginFragment.LoginRe
     }
 
     @Override
-    public void onLoginPrompted(String username, String password) {
-        ownedUserVehicles = new ArrayList<>();
-        Log.v(TAG, "in onLoginPrompted= ");
+    public void onLoginPrompted(String email, String password, final Button btnLogin) {
+        btnLogin.setEnabled(false);
 
         RestAdapter adapter = new RestAdapter.Builder().
                 setEndpoint(ApplicationConfiguration.BASE_URL).build();
-        ApiInterface restInterface = adapter.create(ApiInterface.class);
+        final ApiInterface restInterface = adapter.create(ApiInterface.class);
 
-        restInterface.getUserVehicles(username, password, new Callback<JsonObject>() {
-            @Override
-            public void success(JsonObject jsonObject, Response response) {
-                JsonArray jsonArray = jsonObject.getAsJsonArray(ApplicationConfiguration.DATA_ARRAY_KEY);
+        restInterface.getAuthorization(ApplicationConfiguration.VERSION_VALUE,
+                ApplicationConfiguration.ACCEPT_VALUE, email, password, new Callback<JsonObject>() {
+                    @Override
+                    public void success(JsonObject jsonObject, Response response) {
+                        // Get token from jsonObject
+                        JsonObject jsonDataObj = jsonObject.get(ApplicationConfiguration.DATA_ARRAY_KEY).getAsJsonObject();
+                        String tokenFromApi = jsonDataObj.get(ApplicationConfiguration.TOKEN).getAsString();
+                        SessionManager.getInstance().setLOGIN_TOKEN("Bearer " + tokenFromApi);
 
-                Log.v(TAG, "in Success JsonObject:  = " + jsonObject.getAsString());
-                for (int i = 0; i < jsonArray.size(); i++) {
-                    JsonObject jObj = jsonArray.get(i).getAsJsonObject();
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
 
-                    // Get the values from the JsonObject
-                    String registrationNum = jObj.get(ApplicationConfiguration.REGISTRATION_NUM_KEY).getAsString();
-                    int currentKm = jObj.get(ApplicationConfiguration.CURRENT_KM_KEY).getAsInt();
-                    int kmToNextService = jObj.get(ApplicationConfiguration.KM_TO_NEXT_SERVICE_KEY).getAsInt();
-                    String nextServiceDate = jObj.get(ApplicationConfiguration.NEXT_SERVICE_KEY).getAsString();
-                    String nextInsuranceDate = jObj.get(ApplicationConfiguration.NEXT_INSURANCE_KEY).getAsString();
-                    String nextMotorCascoDate = jObj.get(ApplicationConfiguration.NEXT_MOTOR_CASCO_KEY).getAsString();
-                    String nextAnnualTechnicalInspectionDate = jObj.get(ApplicationConfiguration.NEXT_ANNUAL_TECHNICAL_INSPECTION_KEY).getAsString();
-                    String nextRoadTaxDate = jObj.get(ApplicationConfiguration.NEXT_ROAD_TAX_KEY).getAsString();
+                        // In order not to show this activity if user clicks the back button
+                        finish();
+                           }
 
-                    // Create a new vehicle obj and add it to the arrayList of type Vehicle
-                    Vehicle vehicle = new Vehicle(registrationNum, currentKm, kmToNextService, nextServiceDate,
-                            nextInsuranceDate, nextMotorCascoDate, nextAnnualTechnicalInspectionDate, nextRoadTaxDate);
-                    ownedUserVehicles.add(vehicle);
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.v(TAG, "In failure. RetrofitError :" + error);
-            }
-        });
-
-
-//        RestClient.GitApiInterface service = RestClient.getClient();
-//        service.createUser(email, password, new Callback<JSONObject>() {
-//        });
-//        Call<GitResult> call = service.getUsersNamedTom("tom");
-//        call.enqueue(new Callback<GitResult>() {
-//            @Override
-//            public void onResponse(Response<GitResult> response) {
-//                dialog.dismiss();
-//                Log.d("MainActivity", "Status Code = " + response.code());
-//                if (response.isSuccess()) {
-//                    // request successful (status code 200, 201)
-//                    GitResult result = response.body();
-//                    Log.d("MainActivity", "response = " + new Gson().toJson(result));
-//                    Users = result.getItems();
-//                    Log.d("MainActivity", "Items = " + Users.size());
-//                    adapter = new UserAdapter(MainActivity.this, Users);
-//                    listView.setAdapter(adapter);
-//                } else {
-//                    // response received but request not successful (like 400,401,403 etc)
-//                    //Handle errors
-//
-//                }
-//            }
-
-//            @Override
-//            public void onFailure(Throwable t) {
-//                dialog.dismiss();
-//            }
-//        });
-
-
-        // TODO: pass the data from server to Main Activity
-
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
-
-
-/*
-        String baseUrl = "http://insert your url here";
-        OkHttpClient okClient = new OkHttpClient();
-        okClient.interceptors().add(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Response response = chain.proceed(chain.request());
-                return response;
-            }
-        });
-
-        *//*******//*
-        Retrofit client = new Retrofit().Builder()
-                .baseUrl(baseUrl)
-                .client(okClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-
-
-
-        ApiInterface service = client.create(ApiInterface.class);
-        Call<Vehicle> call = service.getUsersNamedTom("tom");
-        call.enqueue(new Callback<Vehicle>() {
-            @Override
-            public void onResponse(Response<GitResult> response) {
-                if (response.isSuccess()) {
-                    // request successful (status code 200, 201)
-                    GitResult result = response.body();
-                } else {
-                    //request not successful (like 400,401,403 etc)
-                    //Handle errors
-                }
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });*/
-
-        // In order not to show this activity if user clicks the back button
-        finish();
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Log.v(TAG, "In failure. RetrofitError:" + error);
+                        Toast toast = Toast.makeText(getApplicationContext(), "Възникна грешка! Моля, опитайте отново.", Toast.LENGTH_LONG);
+                        toast.show();
+                        btnLogin.setEnabled(true);
+                    }
+                });
     }
 
     @Override
@@ -173,33 +84,57 @@ public class LoginActivity extends BaseActivity implements LoginFragment.LoginRe
     }
 
     @Override
-    public void onBtnRegisterClicked(String email, String password, String password_confirmation) {
-        // TODO: finish implementation
+    public void onBtnRegisterClicked(final String email, String password, String password_confirmation, final Button btnRegister) {
+        // Deactivate the Button
+        btnRegister.setEnabled(false);
 
         RestAdapter adapter = new RestAdapter.Builder().
                 setEndpoint(ApplicationConfiguration.BASE_URL).build();
         ApiInterface restInterface = adapter.create(ApiInterface.class);
-        restInterface.addUser(email, password, password_confirmation, new Callback<JsonObject>() {
-            @Override
-            public void success(JsonObject jsonObject, Response response) {
-                Log.v(TAG, "Response status is:" + response.getStatus());
-                //               if (response.getStatus() == 201) {
-//                    Toast  toast = Toast.makeText(this, "Регистрирахте се успешно! Сега може да влезете в акаунта си.", Toast.LENGTH_LONG);
-//                    toast.show();
-//               }
-            }
+        restInterface.addUser(ApplicationConfiguration.VERSION_VALUE, ApplicationConfiguration.ACCEPT_VALUE,
+                email, password, password_confirmation, new Callback<JsonArray>() {
+                    @Override
+                    public void success(JsonArray jsonElements, Response response) {
+                        // Log.v(TAG, "Response status is:" + response.getStatus());
 
-            @Override
-            public void failure(RetrofitError error) {
-                Log.v(TAG, "In onBtnRegisterClicked - failure error:" + error);
-            }
-        });
+                        Toast toast = Toast.makeText(getApplicationContext(), "Регистрирахте се успешно! Може да влезете в акаунта си.", Toast.LENGTH_LONG);
+                        toast.show();
 
-        // Load login Fragment
-        LoginFragment loginFragment = LoginFragment.getInstance();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.addToBackStack(null)
-                .replace(R.id.login_framelayout, loginFragment, LoginFragment.TAG);
+                        // Save email in SharedPreferences
+                        SharedPreferences sharedPreferences = getApplicationContext()
+                                .getSharedPreferences(getString(R.string.email_pref_key), Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString(getString(R.string.user_email), email);
+                        editor.commit();
 
+                        // Load login Fragment
+                        LoginFragment loginFragment = LoginFragment.getInstance();
+                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.addToBackStack(null)
+                                .replace(R.id.login_framelayout, loginFragment, LoginFragment.TAG)
+                                .commit();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+                        //Enable the button again
+                        btnRegister.setEnabled(true);
+                        switch (error.getResponse().getStatus()) {
+                            case 422: {
+                                String message = "Вече съществува потребител" + "\n" + "с такъв е-мейл";
+                                Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG);
+                                toast.show();
+                                break;
+                            }
+                            default: {
+                                Toast toast = Toast.makeText(getApplicationContext(), "Възникна грешка! Моля, опитайте отново.", Toast.LENGTH_LONG);
+                                toast.show();
+                                break;
+                            }
+
+                        }
+                        //Log.v(TAG, "In onBtnRegisterClicked - failure error:" + error);
+                    }
+                });
     }
 }

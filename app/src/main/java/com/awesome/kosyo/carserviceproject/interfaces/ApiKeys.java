@@ -6,5 +6,4 @@ package com.awesome.kosyo.carserviceproject.interfaces;
 public interface ApiKeys {
 
 
-
 }

@@ -68,13 +68,10 @@ public class LoginFragment extends Fragment {
 
         etEmail = (EditText) view.findViewById(R.id.etEmail);
         etPassword = (EditText) view.findViewById(R.id.etPassword);
-        Integer val = Integer.MAX_VALUE;
-        int newint = val;
-
 
         // Sets the user email to the TextView if previously
         // was save in SharedPreferences
-        sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        sharedPreferences = getActivity().getSharedPreferences(getString(R.string.email_pref_key), Context.MODE_PRIVATE);
         if (sharedPreferences.contains(getString(R.string.user_email))) {
             String defaultEmail = "";
             mEmail = sharedPreferences.getString(getString(R.string.user_email), defaultEmail);
@@ -97,15 +94,13 @@ public class LoginFragment extends Fragment {
                 mPassword = etPassword.getText().toString();
 
                 boolean isInputValid = isValuesValid(mEmail, mPassword);
-
-                // TODO: Uncomment validation check before uploading to stable release
-                //  if (isInputValid) {
-                // Save email in SharedPreferences
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(getString(R.string.user_email), mEmail);
-                editor.commit();
-                mListener.onLoginPrompted(mEmail, mPassword);
-                //   }
+                if (isInputValid) {
+                    // Save email in SharedPreferences
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(getString(R.string.user_email), mEmail);
+                    editor.commit();
+                    mListener.onLoginPrompted(mEmail, mPassword, btnLogin);
+                }
             }
         });
 
@@ -122,23 +117,23 @@ public class LoginFragment extends Fragment {
     private boolean isValuesValid(String email, String password) {
         // is email and password valid
         if (email == null || email.length() == 0) {
-            Toast toast = Toast.makeText(getActivity(), "Your e-mail field is empty", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getActivity(), "Не сте въвели е-мейл", Toast.LENGTH_SHORT);
             toast.show();
             return false;
         }
         if (!isEmailValid(email)) {
             // if mail is not valid
-            Toast toast = Toast.makeText(getActivity(), "Invalid e-mail", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getActivity(), "Невалиден е-мейл", Toast.LENGTH_SHORT);
             toast.show();
             return false;
         }
         if (password == null || password.length() == 0) {
-            Toast toast = Toast.makeText(getActivity(), "Your password field is empty", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getActivity(), "Полето 'парола' е празно", Toast.LENGTH_SHORT);
             toast.show();
             return false;
         }
         if (password.length() < 6) {
-            Toast toast = Toast.makeText(getActivity(), "Your password must be atleast 6 characters", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getActivity(), "Паролата ви трябва да е поне 6 символа дълга", Toast.LENGTH_SHORT);
             toast.show();
             return false;
         }
@@ -152,7 +147,7 @@ public class LoginFragment extends Fragment {
 
 
     public interface LoginRegisterListener {
-        void onLoginPrompted(String email, String password);
+        void onLoginPrompted(String email, String password, Button btnLogin);
 
         void onCreateRegistrationClicked();
     }

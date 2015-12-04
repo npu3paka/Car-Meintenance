@@ -5,7 +5,6 @@ import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +14,8 @@ import com.awesome.kosyo.carserviceproject.R;
 import com.awesome.kosyo.carserviceproject.activities.MainActivity;
 import com.awesome.kosyo.carserviceproject.adapters.DetailArrayAdapter;
 import com.awesome.kosyo.carserviceproject.models.Vehicle;
-import com.awesome.kosyo.carserviceproject.models.VehicleAttribute;
 
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * Created by kosyo on 20.11.15.
@@ -29,7 +26,6 @@ public class DetailAutoFragment extends Fragment implements DetailArrayAdapter.U
     public DataInteractionListener dataInteractionListener;
     private ListView lvDetailAuto;
     private Vehicle vehicleObj;
-    int size;
 
     // Singleton implementation
     private static DetailAutoFragment instance;
@@ -77,10 +73,7 @@ public class DetailAutoFragment extends Fragment implements DetailArrayAdapter.U
         lvDetailAuto.setEmptyView(view.findViewById(R.id.tvEmpty));
 
         mDetailArrayAdapter = new DetailArrayAdapter(getActivity(), vehicleObj.getVehicleAttributesList());
-
-        // Setting
         mDetailArrayAdapter.setUpdatingListener(this);
-
         lvDetailAuto.setAdapter(mDetailArrayAdapter);
     }
 
@@ -102,36 +95,12 @@ public class DetailAutoFragment extends Fragment implements DetailArrayAdapter.U
                 String mMonth = getZeroPaddedNum(monthOfYear + 1);
                 String mYear = Integer.toString(year);
                 String newUserFriendlyFormatDate = mDay + "-" + mMonth + "-" + mYear;
-                listener.dataUpdated(newUserFriendlyFormatDate);
-
-                List<VehicleAttribute> vehicleAttributeList = vehicleObj.getVehicleAttributesList();
-
-
-                Log.i(TAG, "newUserFriendlyFormatDate :" + newUserFriendlyFormatDate);
-                // Logs
-//                String val;
-//                for(int i=0; i< vehicleAttributeList.size(); i++){
-//                    val =  vehicleAttributeList.get(i).getmValue();
-//                    Log.v(TAG, "Val: "+ i + " :" + val);
-//                }
-
 
                 String newApiFormatDate = MainActivity.toApiFormatDate(newUserFriendlyFormatDate);
+                dataInteractionListener.saveUpdatedVehicle(position, newApiFormatDate);
 
-                Log.v(TAG, "newApiFormatDate :" + newApiFormatDate);
-                vehicleAttributeList.get(position).setmValue(newApiFormatDate);
-                //TODO Update on server
-                //then update the list
-                vehicleObj.updateVehicleByAttributes(vehicleAttributeList);
-
-                // Logs
-                String str2;
-                for(int i=0; i< vehicleAttributeList.size(); i++){
-                    str2 =  vehicleAttributeList.get(i).getmValue();
-                    Log.v(TAG, " New Val: "+ i + " :" + str2);
-                }
-
-                dataInteractionListener.saveData(vehicleObj);
+                // Update value on the Phone Screen
+                listener.dataUpdated(newUserFriendlyFormatDate);
             }
         };
 
@@ -162,7 +131,7 @@ public class DetailAutoFragment extends Fragment implements DetailArrayAdapter.U
     }
 
     public interface DataInteractionListener {
-        void saveData(Vehicle vehicle);
+        void saveUpdatedVehicle(int position, String newApiFormatDate);
     }
 
 }

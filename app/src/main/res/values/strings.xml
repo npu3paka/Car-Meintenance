@@ -31,5 +31,7 @@
     <string name="details">Details</string>
     <string name="register">Register</string>
     <string name="create_new_registration">Create new registration</string>
+    <string name="token_pref_key">com.awesome.kosyo.carserviceproject.token_pref_key</string>
+    <string name="email_pref_key">com.awesome.kosyo.carserviceproject.email_pref_key</string>
 
 </resources>

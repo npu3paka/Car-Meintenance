@@ -82,10 +82,10 @@ public class RegisterFragment extends Fragment {
 
                 boolean isValid = isValuesValid(email, password, passwordConfirm);
 
-                // TODO: Uncomment before putting in production
-                //if (isValid) {
-                    mListener.onBtnRegisterClicked(email, password, passwordConfirm);
-                //}
+
+                if (isValid) {
+                    mListener.onBtnRegisterClicked(email, password, passwordConfirm, mBtnRegister);
+                }
             }
         });
     }
@@ -126,6 +126,7 @@ public class RegisterFragment extends Fragment {
     }
 
     public interface OnBtnRegisterListener {
-        void onBtnRegisterClicked(String email, String password, String password_confirmation);
+
+        void onBtnRegisterClicked(String email, String password, String password_confirmation, Button btnRegister);
     }
 }
