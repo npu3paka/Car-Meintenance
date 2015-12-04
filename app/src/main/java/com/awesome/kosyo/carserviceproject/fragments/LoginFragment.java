@@ -72,7 +72,7 @@ public class LoginFragment extends Fragment {
         // Sets the user email to the TextView if previously
         // was save in SharedPreferences
         sharedPreferences = getActivity().getSharedPreferences(getString(R.string.email_pref_key), Context.MODE_PRIVATE);
-        if (sharedPreferences.contains(getString(R.string.user_email))) {
+        if (sharedPreferences.contains(getString(R.string.email_pref_key))) {
             String defaultEmail = "";
             mEmail = sharedPreferences.getString(getString(R.string.user_email), defaultEmail);
             etEmail.setText(mEmail);

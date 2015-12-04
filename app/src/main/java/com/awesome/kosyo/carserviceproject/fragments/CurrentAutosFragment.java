@@ -68,13 +68,18 @@ public class CurrentAutosFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ownedAutosListView = (ListView) view.findViewById(R.id.lvCurrentAutos);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                ownedCarsDetails
-        );
-        ownedAutosListView.setAdapter(arrayAdapter);
-
+        try {
+            if (!ownedCarsDetails.isEmpty()) {
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                        getActivity(),
+                        android.R.layout.simple_list_item_1,
+                        ownedCarsDetails
+                );
+                ownedAutosListView.setAdapter(arrayAdapter);
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
         setOnClickListeners();
     }
 

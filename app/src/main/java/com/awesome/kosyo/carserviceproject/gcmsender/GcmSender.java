@@ -17,6 +17,7 @@
 package com.awesome.kosyo.carserviceproject.gcmsender;
 
 import org.apache.commons.io.IOUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -82,6 +83,8 @@ public class GcmSender {
             System.out.println("Unable to send GCM message.");
             System.out.println("Please ensure that API_KEY has been replaced by the server " +
                     "API key, and that the device's registration token is correct (if specified).");
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }

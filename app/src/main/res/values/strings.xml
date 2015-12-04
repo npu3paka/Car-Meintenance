@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Fleet care pro</string>
+    <string name="app_name" translatable="false">Fleet Care Pro</string>
     <string name="title_activity_main" translatable="false">MainActivity</string>
     <string name="login_button_title">login</string>
     <string name="register_button_title">register</string>
@@ -33,5 +33,8 @@
     <string name="create_new_registration">Create new registration</string>
     <string name="token_pref_key">com.awesome.kosyo.carserviceproject.token_pref_key</string>
     <string name="email_pref_key">com.awesome.kosyo.carserviceproject.email_pref_key</string>
+    <string name="token_from_GCM_preference_key">com.awesome.kosyo.carserviceproject.token_from_GCM_preference_key</string>
+    <string name="token_from_GCM">com.awesome.kosyo.carserviceproject.token_from_GCM</string>
+    <string name="sender_ID">488375876345</string>
 
 </resources>

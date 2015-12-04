@@ -17,12 +17,14 @@
 package com.awesome.kosyo.carserviceproject.gcmquickstart;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.awesome.kosyo.carserviceproject.R;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
@@ -50,10 +52,12 @@ public class RegistrationIntentService extends IntentService {
             // See https://developers.google.com/cloud-messaging/android/start for details on this file.
             // [START get_token]
             InstanceID instanceID = InstanceID.getInstance(this);
-            String token = instanceID.getToken(getString(R.string.gcm_defaultSenderId),
+            String token = instanceID.getToken(getString(R.string.sender_ID),
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
             // [END get_token]
             Log.i(TAG, "GCM Registration Token: " + token);
+
+            saveRegistrationToServer(token);
 
             // TODO: Implement this method to send any registration to your app's servers.
             sendRegistrationToServer(token);
@@ -75,6 +79,14 @@ public class RegistrationIntentService extends IntentService {
         // Notify UI that registration has completed, so the progress indicator can be hidden.
         Intent registrationComplete = new Intent(QuickstartPreferences.REGISTRATION_COMPLETE);
         LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
+    }
+
+    private void saveRegistrationToServer(String token) {
+        SharedPreferences sharePrefs =  getApplicationContext()
+                .getSharedPreferences(getString(R.string.token_from_GCM_preference_key), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor =  sharePrefs.edit();
+        editor.putString(getString(R.string.token_from_GCM), token);
+        editor.commit();
     }
 
     /**

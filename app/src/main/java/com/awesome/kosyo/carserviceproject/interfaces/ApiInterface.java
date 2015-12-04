@@ -11,6 +11,7 @@ import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.POST;
 import retrofit.http.PUT;
+import retrofit.http.Path;
 
 /**
  * Created by kosyo on 30.11.15.
@@ -36,15 +37,17 @@ public interface ApiInterface {
                  Callback<JsonArray> cb);
 
 
-    @GET("/vehicles")
-    void getVehicles(@Header(ApplicationConfiguration.VERSION) int versionValue,
+    @GET("/vehicles{token}")
+    void getVehicles(@Path(ApplicationConfiguration.TOKEN) String tokenGCM,
+                     @Header(ApplicationConfiguration.VERSION) int versionValue,
                      @Header(ApplicationConfiguration.ACCEPT) String acceptValue,
                      @Header(ApplicationConfiguration.AUTHORIZATION) String token,
                      Callback<JsonObject> cb);
 
     @FormUrlEncoded
-    @POST("/vehicles")
-    void addVehicle(@Header(ApplicationConfiguration.VERSION) int versionValue,
+    @POST("/vehicles{token}")
+    void addVehicle(@Path(ApplicationConfiguration.TOKEN) String tokenGCM,
+                    @Header(ApplicationConfiguration.VERSION) int versionValue,
                     @Header(ApplicationConfiguration.ACCEPT) String acceptValue,
                     @Header(ApplicationConfiguration.AUTHORIZATION) String token,
                     @Field(ApplicationConfiguration.REGISTRATION_NUM_KEY) String registration_plate,
@@ -59,21 +62,25 @@ public interface ApiInterface {
 
 
     @FormUrlEncoded
-    @PUT("/vehicles")
-    void updateVehicle(@Header(ApplicationConfiguration.VERSION) int versionValue,
-                    @Header(ApplicationConfiguration.ACCEPT) String acceptValue,
-                    @Header(ApplicationConfiguration.AUTHORIZATION) String token,
-                    @Field(ApplicationConfiguration.REGISTRATION_NUM_KEY) String registration_plate,
-                    @Field(ApplicationConfiguration.CURRENT_KM_KEY) int run,
-                    @Field(ApplicationConfiguration.KM_TO_NEXT_SERVICE_KEY) int kilometers_next_attendance,
-                    @Field(ApplicationConfiguration.NEXT_SERVICE_KEY) String date_next_attendance,
-                    @Field(ApplicationConfiguration.NEXT_INSURANCE_KEY) String civil_liability,
-                    @Field(ApplicationConfiguration.NEXT_MOTOR_CASCO_KEY) String casco,
-                    @Field(ApplicationConfiguration.NEXT_ANNUAL_TECHNICAL_INSPECTION_KEY) String annual_technical_inspection,
-                    @Field(ApplicationConfiguration.NEXT_ROAD_TAX_KEY) String vignette,
-                    Callback<JsonObject> cb);
+    @PUT("/vehicles{token}")
+    void updateVehicle(@Path(ApplicationConfiguration.TOKEN) String tokenGCM,
+                       @Header(ApplicationConfiguration.VERSION) int versionValue,
+                       @Header(ApplicationConfiguration.ACCEPT) String acceptValue,
+                       @Header(ApplicationConfiguration.AUTHORIZATION) String token,
+                       @Field(ApplicationConfiguration.REGISTRATION_NUM_KEY) String registration_plate,
+                       @Field(ApplicationConfiguration.CURRENT_KM_KEY) int run,
+                       @Field(ApplicationConfiguration.KM_TO_NEXT_SERVICE_KEY) int kilometers_next_attendance,
+                       @Field(ApplicationConfiguration.NEXT_SERVICE_KEY) String date_next_attendance,
+                       @Field(ApplicationConfiguration.NEXT_INSURANCE_KEY) String civil_liability,
+                       @Field(ApplicationConfiguration.NEXT_MOTOR_CASCO_KEY) String casco,
+                       @Field(ApplicationConfiguration.NEXT_ANNUAL_TECHNICAL_INSPECTION_KEY) String annual_technical_inspection,
+                       @Field(ApplicationConfiguration.NEXT_ROAD_TAX_KEY) String vignette,
+                       Callback<JsonObject> cb);
 
     // TODO: ADD for logout
+
+
+    // TODO get token from GCM
 
 
 //    @FormUrlEncoded

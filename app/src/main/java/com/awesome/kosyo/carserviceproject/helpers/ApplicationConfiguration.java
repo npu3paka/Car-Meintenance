@@ -7,7 +7,6 @@ public class ApplicationConfiguration {
     public final static String BASE_URL = "http://smartpril.158.bg/public/api";
 
     public final static String DATA_ARRAY_KEY = "data";
-
     public final static String AUTHORIZATION = "Authorization";
 
     // Header for authorising a user

@@ -66,13 +66,20 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ListView overdueItemsListView = (ListView) view.findViewById(R.id.overdue_items_listview);
-        ArrayAdapter<String> overduePartsArrayAdapter = new ArrayAdapter<String>(
-                getActivity(), //  context
-                R.layout.list_item_overdue, // The name of the layout ID
-                R.id.tvOverdueRegNum,       // The name of the textview ID
-                this.regNumOverdueList    // the list of data to show
-        );
-        overdueItemsListView.setAdapter(overduePartsArrayAdapter);
+
+       try{
+           if (!regNumOverdueList.isEmpty()) {
+               ArrayAdapter<String> overduePartsArrayAdapter = new ArrayAdapter<String>(
+                       getActivity(), //  context
+                       R.layout.list_item_overdue, // The name of the layout ID
+                       R.id.tvOverdueRegNum,       // The name of the textview ID
+                       this.regNumOverdueList    // the list of data to show
+               );
+               overdueItemsListView.setAdapter(overduePartsArrayAdapter);
+           }
+        } catch (NullPointerException e){
+           e.printStackTrace();
+       }
         return view;
     }
 

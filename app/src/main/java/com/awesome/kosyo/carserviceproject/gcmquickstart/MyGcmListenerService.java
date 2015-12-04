@@ -26,6 +26,8 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.awesome.kosyo.carserviceproject.R;
+import com.awesome.kosyo.carserviceproject.activities.MainActivity;
 import com.google.android.gms.gcm.GcmListenerService;
 
 public class MyGcmListenerService extends GcmListenerService {
@@ -82,7 +84,7 @@ public class MyGcmListenerService extends GcmListenerService {
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_stat_ic_notification)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("GCM Message")
                 .setContentText(message)
                 .setAutoCancel(true)

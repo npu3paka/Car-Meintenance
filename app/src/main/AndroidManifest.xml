@@ -4,15 +4,14 @@
 
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- For GCM
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-
+    <!-- For GCM  -->
     <permission
         android:name="com.awesome.kosyo.carserviceproject.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
     <uses-permission android:name="com.awesome.kosyo.carserviceproject.permission.C2D_MESSAGE" />
-   -->
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -28,25 +27,24 @@
                 <category android:name="com.example.gcm" />
             </intent-filter>
         </receiver>
-        <!-- For GCM
-                <service
-                    android:name="com.example.MyGcmListenerService"
-                    android:exported="false">
-                    <intent-filter>
-                        <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                    </intent-filter>
-                </service>
-
-                <service
-                    android:name="com.example.MyInstanceIDListenerService"
-                    android:exported="false">
-                    <intent-filter>
-                        <action android:name="com.google.android.gms.iid.InstanceID" />
-                        <!- - Support pre-4.4 KitKat devices - ->
-        <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-         </intent-filter>
+        <!-- For GCM -->
+        <service
+            android:name="com.awesome.kosyo.carserviceproject.gcmquickstart.MyGcmListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
         </service>
-        -->
+        <service
+            android:name="com.awesome.kosyo.carserviceproject.gcmquickstart.MyInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID" />
+                <!-- Support pre-4.4 KitKat devices -->
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+            </intent-filter>
+        </service>
+        <!-- -->
 
         <activity
             android:name="com.awesome.kosyo.carserviceproject.activities.LoginActivity"
@@ -60,7 +58,7 @@
         <activity
             android:name="com.awesome.kosyo.carserviceproject.activities.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
 
     </application>
 

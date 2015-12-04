@@ -14,8 +14,10 @@ import com.awesome.kosyo.carserviceproject.R;
 import com.awesome.kosyo.carserviceproject.activities.MainActivity;
 import com.awesome.kosyo.carserviceproject.adapters.DetailArrayAdapter;
 import com.awesome.kosyo.carserviceproject.models.Vehicle;
+import com.awesome.kosyo.carserviceproject.models.VehicleAttribute;
 
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by kosyo on 20.11.15.
@@ -97,10 +99,11 @@ public class DetailAutoFragment extends Fragment implements DetailArrayAdapter.U
                 String newUserFriendlyFormatDate = mDay + "-" + mMonth + "-" + mYear;
 
                 String newApiFormatDate = MainActivity.toApiFormatDate(newUserFriendlyFormatDate);
-                dataInteractionListener.saveUpdatedVehicle(position, newApiFormatDate);
-
-                // Update value on the Phone Screen
-                listener.dataUpdated(newUserFriendlyFormatDate);
+                // Update the attribute in the Vehicle object
+                List<VehicleAttribute> vehicleAttributeList = vehicleObj.getVehicleAttributesList();
+                vehicleAttributeList.get(position).setmValue(newApiFormatDate);
+                vehicleObj.updateVehicleByAttributes(vehicleAttributeList);
+                dataInteractionListener.saveUpdatedVehicle(vehicleObj, listener, newUserFriendlyFormatDate);
             }
         };
 
@@ -131,7 +134,8 @@ public class DetailAutoFragment extends Fragment implements DetailArrayAdapter.U
     }
 
     public interface DataInteractionListener {
-        void saveUpdatedVehicle(int position, String newApiFormatDate);
+        void saveUpdatedVehicle(Vehicle vehicle, DetailArrayAdapter.DataUpdatingListener listener,
+                                String newUserFriendlyFormatDate);
     }
 
 }
