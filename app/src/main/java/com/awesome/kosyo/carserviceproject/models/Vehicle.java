@@ -27,28 +27,31 @@ public class Vehicle {
                    String mNextServiceDate, String mNextInsuranceDate,
                    String mNextMotorCascoDate, String mNextCarServiceDate,
                    String mNextRoadTaxDate) {
-        this.mRegistrationNum = mRegistrationNum;
-        this.mCurrentKm = mCurrentKm;
-        this.mKmToNextService = mKmToNextService;
-        this.mNextOilServiceDate = mNextServiceDate;
-        this.mNextInsuranceDate = mNextInsuranceDate;
-        this.mNextMotorCascoDate = mNextMotorCascoDate;
-        this.mNextAnnualTechnicalServiceDate = mNextCarServiceDate;
-        this.mNextRoadTaxDate = mNextRoadTaxDate;
 
-        vehicleAttributesNames = new ArrayList<>();
-        vehicleAttributesNames.add("Service valid to: ");
-        vehicleAttributesNames.add("Insurance valid to: ");
-        vehicleAttributesNames.add("Motor casco valid to: ");
-        vehicleAttributesNames.add("Next Technical Service: ");
-        vehicleAttributesNames.add("Next Road Tax: ");
+        setVehicleAttributesName(mRegistrationNum, mCurrentKm, mKmToNextService, mNextServiceDate,
+                mNextInsuranceDate,mNextMotorCascoDate,mNextCarServiceDate,mNextRoadTaxDate);
+
+        setVehicleAttributesNames();
     }
 
     public Vehicle(int mId, String mRegistrationNum, int mCurrentKm, int mKmToNextService,
                    String mNextServiceDate, String mNextInsuranceDate,
                    String mNextMotorCascoDate, String mNextCarServiceDate,
                    String mNextRoadTaxDate) {
+
         this.mId = mId;
+
+        setVehicleAttributesName(mRegistrationNum, mCurrentKm, mKmToNextService, mNextServiceDate,
+                mNextInsuranceDate,mNextMotorCascoDate,mNextCarServiceDate,mNextRoadTaxDate);
+
+        setVehicleAttributesNames();
+    }
+
+    //Set the vehicle attributes
+    private void setVehicleAttributesName(String mRegistrationNum, int mCurrentKm, int mKmToNextService,
+                                          String mNextServiceDate, String mNextInsuranceDate,
+                                          String mNextMotorCascoDate, String mNextCarServiceDate,
+                                          String mNextRoadTaxDate) {
         this.mRegistrationNum = mRegistrationNum;
         this.mCurrentKm = mCurrentKm;
         this.mKmToNextService = mKmToNextService;
@@ -57,7 +60,10 @@ public class Vehicle {
         this.mNextMotorCascoDate = mNextMotorCascoDate;
         this.mNextAnnualTechnicalServiceDate = mNextCarServiceDate;
         this.mNextRoadTaxDate = mNextRoadTaxDate;
+    }
 
+    //Initialize array with attribute names
+    private void setVehicleAttributesNames() {
         vehicleAttributesNames = new ArrayList<>();
         vehicleAttributesNames.add("Service valid to: ");
         vehicleAttributesNames.add("Insurance valid to: ");
